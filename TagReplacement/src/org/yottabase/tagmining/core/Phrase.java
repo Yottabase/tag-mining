@@ -1,6 +1,6 @@
 package org.yottabase.tagmining.core;
 
-public class Phrase {
+public class Phrase implements Cloneable{
 
 	private String trecID;
 	
@@ -45,4 +45,19 @@ public class Phrase {
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
+	
+	public Object clone() {
+        Phrase phrase = new Phrase();
+        phrase.setTrecID(this.getTrecID());
+		phrase.setPhrase(this.getPhrase());
+		return phrase;
+    }
+
+	@Override
+	public String toString() {
+		return "Phrase [trecID=" + trecID + ", phrase=" + phrase
+				+ ", taggedPhrase=" + taggedPhrase + ", tag=" + tag + "]";
+	}
+	
+	
 }
