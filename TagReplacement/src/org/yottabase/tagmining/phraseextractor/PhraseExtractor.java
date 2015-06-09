@@ -5,7 +5,7 @@ import java.util.List;
 import org.yottabase.tagmining.core.Phrase;
 import org.yottabase.tagmining.core.WebPage;
 
-public class PhraseExtractorImpl implements InterfacePhraseExtractor {
+public class PhraseExtractor implements InterfacePhraseExtractor {
 
 	@Override
 	public List<Phrase> extractPhrases(WebPage htmlPage) {
