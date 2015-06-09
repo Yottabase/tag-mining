@@ -9,8 +9,14 @@ public class DateTagMiner implements InterfaceTagMiner{
 	
 	private static final String TAG_NAME = "DATE";
 
+	private RegularExpressionCollection eregCollection = new RegularExpressionCollection();
+	
 	@Override
 	public Phrase tagPhrase(Phrase originalPhrase) {
+
+	
+		System.out.println(eregCollection.get("expr.date"));
+		System.out.println(eregCollection.get("expr.number"));
 		
 	      String regex = "(.*)(\\d+)(.*)";
 

@@ -9,6 +9,11 @@ public class WebPage {
 	public WebPage() {
 		super();
 	}
+	
+	public WebPage(String trecID, String pageHtml) {
+		this.trecID = trecID;
+		this.pageHtml = pageHtml;
+	}
 
 	public String getTrecID() {
 		return trecID;

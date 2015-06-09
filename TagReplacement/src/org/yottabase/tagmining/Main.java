@@ -10,7 +10,7 @@ import org.yottabase.tagmining.core.WebPage;
 import org.yottabase.tagmining.parsing.InterfaceInputManager;
 import org.yottabase.tagmining.parsing.InputManager;
 import org.yottabase.tagmining.phraseextractor.InterfacePhraseExtractor;
-import org.yottabase.tagmining.phraseextractor.PhraseExtractorImpl;
+import org.yottabase.tagmining.phraseextractor.PhraseExtractor;
 import org.yottabase.tagmining.tagminer.InterfaceTagMiner;
 import org.yottabase.tagmining.tagminer.TagMinerAggregate;
 
@@ -23,7 +23,7 @@ public class Main {
 		Config config = new Config();
 		Properties properties = config.getProperties();
 		InterfaceInputManager inputManager = new InputManager(properties.getProperty(PROP_INPUT));
-		InterfacePhraseExtractor phraseExtractor = new PhraseExtractorImpl();
+		InterfacePhraseExtractor phraseExtractor = new PhraseExtractor();
 		InterfaceTagMiner tagMiner = new TagMinerAggregate();
 		
 		

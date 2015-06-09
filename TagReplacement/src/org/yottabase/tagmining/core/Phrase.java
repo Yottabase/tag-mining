@@ -59,5 +59,9 @@ public class Phrase implements Cloneable{
 				+ ", taggedPhrase=" + taggedPhrase + ", tag=" + tag + "]";
 	}
 	
+	public boolean isTagged(){
+		return this.taggedPhrase != null && this.tag != null;
+	}
+	
 	
 }
