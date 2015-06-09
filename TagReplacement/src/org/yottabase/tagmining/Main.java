@@ -1,7 +1,10 @@
 package org.yottabase.tagmining;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
+import org.yottabase.tagmining.core.Config;
 import org.yottabase.tagmining.core.Phrase;
 import org.yottabase.tagmining.core.WebPage;
 import org.yottabase.tagmining.parsing.InterfaceInputManager;
@@ -13,9 +16,13 @@ import org.yottabase.tagmining.tagminer.TagMinerAggregate;
 
 public class Main {
 
-	public static void main(String[] args) {
+	private static final String PROP_INPUT = "dataset.input";
+
+	public static void main(String[] args) throws IOException {
 		
-		InterfaceInputManager inputManager = new InputManager("/filename");
+		Config config = new Config();
+		Properties properties = config.getProperties();
+		InterfaceInputManager inputManager = new InputManager(properties.getProperty(PROP_INPUT));
 		InterfacePhraseExtractor phraseExtractor = new PhraseExtractorImpl();
 		InterfaceTagMiner tagMiner = new TagMinerAggregate();
 		
