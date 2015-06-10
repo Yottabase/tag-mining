@@ -22,8 +22,6 @@ public class TagMinerAggregate implements InterfaceTagMiner{
 		
 		for(InterfaceTagMiner tagMiner : tagMiners){
 			
-			if(phrase.isTagged()) break;
-			
 			phrase = tagMiner.tagPhrase(phrase);
 			
 		}

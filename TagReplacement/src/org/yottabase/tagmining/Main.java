@@ -38,12 +38,7 @@ public class Main {
 				phrase = tagMiner.tagPhrase(phrase);
 			
 				//TODO aggiungere salvataggio su file
-				System.out.format("%s\t%s\t%s\t%s\n", 
-					phrase.getTrecID(),
-					phrase.getPhrase(),
-					phrase.getTaggedPhrase(),
-					phrase.getTag()
-				);
+				System.out.println(phrase);
 			}
 		}
 	}

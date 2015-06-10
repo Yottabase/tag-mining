@@ -11,12 +11,10 @@ public class TagMinerTester {
 		
 		InterfaceTagMiner tagMiner = new DateTagMiner();
 		
-		Phrase originalPhrase = new Phrase();
-		originalPhrase.setPhrase("ciao 12-mag-05");
+		Phrase phrase = new Phrase("00003", "ciao 12-mag-05");
 		
 		
-		
-		Phrase taggedPhrase = tagMiner.tagPhrase(originalPhrase);
+		Phrase taggedPhrase = tagMiner.tagPhrase(phrase);
 		
 		System.out.println(taggedPhrase);
 		
