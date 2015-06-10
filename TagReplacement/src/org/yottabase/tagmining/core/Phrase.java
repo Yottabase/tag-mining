@@ -1,6 +1,9 @@
 package org.yottabase.tagmining.core;
 
-public class Phrase implements Cloneable{
+import java.util.ArrayList;
+import java.util.List;
+
+public class Phrase{
 
 	private String trecID;
 	
@@ -8,10 +11,16 @@ public class Phrase implements Cloneable{
 	
 	private String taggedPhrase;
 	
-	private String tag;
+	private List<TaggedWord> taggedWords = new ArrayList<TaggedWord>();
 
 	public Phrase() {
-		super();
+		
+	}
+	
+	public Phrase(String trecID, String originalPhrase) {
+		this.trecID = trecID;
+		this.phrase = originalPhrase;
+		this.taggedPhrase = originalPhrase;
 	}
 
 	public String getTrecID() {
@@ -37,31 +46,34 @@ public class Phrase implements Cloneable{
 	public void setTaggedPhrase(String taggedPhrase) {
 		this.taggedPhrase = taggedPhrase;
 	}
-
-	public String getTag() {
-		return tag;
+	
+	public List<TaggedWord> getTaggedWords() {
+		return taggedWords;
 	}
 
-	public void setTag(String tag) {
-		this.tag = tag;
+	public void setTaggedWords(List<TaggedWord> taggedWords) {
+		this.taggedWords = taggedWords;
 	}
 	
-	public Object clone() {
-        Phrase phrase = new Phrase();
-        phrase.setTrecID(this.getTrecID());
-		phrase.setPhrase(this.getPhrase());
-		return phrase;
-    }
-
+	public void addTaggedWord(TaggedWord taggedWord){
+		this.taggedWords.add(taggedWord);
+	}
+	
 	@Override
 	public String toString() {
+		
+		String str = "";
+		for(TaggedWord taggedWord : taggedWords){
+			str += taggedWord + " ";
+		}
+		
 		return "Phrase [trecID=" + trecID + ", phrase=" + phrase
-				+ ", taggedPhrase=" + taggedPhrase + ", tag=" + tag + "]";
+				+ ", taggedPhrase=" + taggedPhrase + ", taggedWords="
+				+ str + "]";
 	}
-	
+
 	public boolean isTagged(){
-		return this.taggedPhrase != null && this.tag != null;
+		return ! this.taggedWords.isEmpty();
 	}
-	
 	
 }
