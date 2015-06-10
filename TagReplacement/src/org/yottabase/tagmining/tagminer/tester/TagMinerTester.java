@@ -14,7 +14,6 @@ public class TagMinerTester {
 		Phrase originalPhrase = new Phrase();
 		originalPhrase.setPhrase("ciao 12-mag-05");
 		
-		
 		Phrase taggedPhrase = tagMiner.tagPhrase(originalPhrase);
 		
 		System.out.println(taggedPhrase);

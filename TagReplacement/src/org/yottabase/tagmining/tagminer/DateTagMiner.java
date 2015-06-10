@@ -14,25 +14,23 @@ public class DateTagMiner implements InterfaceTagMiner{
 	@Override
 	public Phrase tagPhrase(Phrase originalPhrase) {
 
-	
-		System.out.println(eregCollection.get("expr.date"));
-		System.out.println(eregCollection.get("expr.number"));
 		
-	      String regex = "(.*)(\\d+)(.*)";
+	      String regex = eregCollection.get("expr.number");
 
 	      // Create a Pattern object
 	      Pattern r = Pattern.compile(regex);
 
 	      // Now create matcher object.
 	      Matcher m = r.matcher(originalPhrase.getPhrase());
-	      if (m.find( )) {
-	         System.out.println("Found value: " + m.group(0) );
-	         System.out.println("Found value: " + m.group(1) );
-	         System.out.println("Found value: " + m.group(2) );
-	      } else {
-	         System.out.println("NO MATCH");
+	     
+	      for (int i = 0; i < m.groupCount(); i++) {
+	    	  if (m.find( )) { 
+	    		  System.out.println("Found value: " + m.group(i) );
+	    	  }else {
+	 	         System.out.println("NO MATCH");
+		      }
 	      }
-		
+	    
 		
 		Phrase phrase = (Phrase) originalPhrase.clone();
 		
