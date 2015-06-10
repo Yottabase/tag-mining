@@ -6,9 +6,9 @@ import java.util.regex.Pattern;
 import org.yottabase.tagmining.core.Phrase;
 import org.yottabase.tagmining.core.TaggedWord;
 
-public class DateTagMiner implements InterfaceTagMiner {
+public class IpTagMiner implements InterfaceTagMiner{
 	
-	private static final String TAG_NAME = "DATE";
+	private static final String TAG_NAME = "IP";
 
 	private RegularExpressionCollection eregCollection = new RegularExpressionCollection();
 	
@@ -17,8 +17,8 @@ public class DateTagMiner implements InterfaceTagMiner {
 	public Phrase tagPhrase(Phrase phrase) {
 
 		
-		String regex = eregCollection.get("expr.test");
-				
+		String regex = eregCollection.get("expr.ip");
+		
 		// Create a Pattern object
 		Pattern r = Pattern.compile(regex);
 

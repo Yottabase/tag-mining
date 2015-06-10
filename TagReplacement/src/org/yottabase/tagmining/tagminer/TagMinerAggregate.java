@@ -11,7 +11,9 @@ public class TagMinerAggregate implements InterfaceTagMiner{
 	
 	public TagMinerAggregate() {
 		
-		tagMiners.add(new DateTagMiner());
+		//tagMiners.add(new DateTagMiner());
+		tagMiners.add(new MailTagMiner());
+		tagMiners.add(new IpTagMiner());
 		
 	}
 

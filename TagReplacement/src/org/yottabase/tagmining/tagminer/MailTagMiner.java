@@ -6,9 +6,9 @@ import java.util.regex.Pattern;
 import org.yottabase.tagmining.core.Phrase;
 import org.yottabase.tagmining.core.TaggedWord;
 
-public class DateTagMiner implements InterfaceTagMiner {
+public class MailTagMiner implements InterfaceTagMiner {
 	
-	private static final String TAG_NAME = "DATE";
+	private static final String TAG_NAME = "MAIL";
 
 	private RegularExpressionCollection eregCollection = new RegularExpressionCollection();
 	
@@ -17,11 +17,11 @@ public class DateTagMiner implements InterfaceTagMiner {
 	public Phrase tagPhrase(Phrase phrase) {
 
 		
-		String regex = eregCollection.get("expr.test");
-				
-		// Create a Pattern object
-		Pattern r = Pattern.compile(regex);
+		String regex = eregCollection.get("expr.mail");
 
+		// Create a Pattern object
+		Pattern r = Pattern.compile(regex,Pattern.CASE_INSENSITIVE);
+	
 		// Now create matcher object.
 		Matcher m = r.matcher(phrase.getPhrase());
 		
@@ -29,6 +29,7 @@ public class DateTagMiner implements InterfaceTagMiner {
 			if (m.find()) {
 				System.out.println("Found value: " + m.group(i));
 				String taggedPhrase= phrase.getPhrase();
+				System.out.println(taggedPhrase);
 				phrase.setTaggedPhrase(taggedPhrase.replace(m.group(i), "#"+TAG_NAME));
 				phrase.addTaggedWord(new TaggedWord(m.group(i), TAG_NAME));
 			} 

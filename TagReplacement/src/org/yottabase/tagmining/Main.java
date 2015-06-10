@@ -38,7 +38,7 @@ public class Main {
 				phrase = tagMiner.tagPhrase(phrase);
 			
 				//TODO aggiungere salvataggio su file
-				System.out.println(phrase);
+				//System.out.println(phrase);
 			}
 		}
 	}
