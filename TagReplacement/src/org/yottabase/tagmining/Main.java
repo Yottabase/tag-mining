@@ -2,29 +2,28 @@ package org.yottabase.tagmining;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
 
-import org.yottabase.tagmining.core.Config;
 import org.yottabase.tagmining.core.Phrase;
+import org.yottabase.tagmining.core.PropertyReader;
 import org.yottabase.tagmining.core.WebPage;
 import org.yottabase.tagmining.parsing.InterfaceInputManager;
 import org.yottabase.tagmining.parsing.InputManager;
 import org.yottabase.tagmining.phraseextractor.InterfacePhraseExtractor;
 import org.yottabase.tagmining.phraseextractor.PhraseExtractor;
-import org.yottabase.tagmining.tagminer.InterfaceTagMiner;
 import org.yottabase.tagmining.tagminer.TagMinerAggregate;
 
 public class Main {
+	
+	private final static String CONFIG_PROPERTIES = "config.properties";
 
-	private static final String PROP_INPUT = "dataset.input";
+	private final static String PROP_INPUT = "dataset.input";
 
 	public static void main(String[] args) throws IOException {
 		
-		Config config = new Config();
-		Properties properties = config.getProperties();
-		InterfaceInputManager inputManager = new InputManager(properties.getProperty(PROP_INPUT));
+		PropertyReader properties = new PropertyReader(CONFIG_PROPERTIES);
+		InterfaceInputManager inputManager = new InputManager(properties.get(PROP_INPUT));
 		InterfacePhraseExtractor phraseExtractor = new PhraseExtractor();
-		InterfaceTagMiner tagMiner = new TagMinerAggregate();
+		TagMinerAggregate tagMiner = new TagMinerAggregate();
 		
 		
 		WebPage webPage = null;
