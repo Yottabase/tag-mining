@@ -5,22 +5,23 @@ import java.util.List;
 
 import org.yottabase.tagmining.core.Phrase;
 
-public class TagMinerAggregate {
+public class TagMinerAggregate implements InterfaceTagMiner {
 
-	private List<TagMiner> tagMiners = new LinkedList<TagMiner>();
+	private List<RegexTagMiner> tagMiners = new LinkedList<RegexTagMiner>();
 	
 	public TagMinerAggregate() {
-		TagMiner dateMiner = new TagMiner(RegExCollection.REGEX_DATE, TagCollection.TAG_DATE);
+		RegexTagMiner dateMiner = new RegexTagMiner(RegExCollection.REGEX_DATE, TagCollection.TAG_DATE);
 		
 		tagMiners.add( dateMiner );
 		
 	}
 
+	@Override
 	public Phrase tagPhrase(Phrase originalPhrase) {
 		
 		Phrase phrase = originalPhrase;
 		
-		for(TagMiner tagMiner : tagMiners){
+		for(RegexTagMiner tagMiner : tagMiners){
 			
 			phrase = tagMiner.tagPhrase(phrase);
 			

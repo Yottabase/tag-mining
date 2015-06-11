@@ -6,17 +6,18 @@ import java.util.regex.Pattern;
 import org.yottabase.tagmining.core.Phrase;
 import org.yottabase.tagmining.core.TaggedWord;
 
-public class TagMiner {
+public class RegexTagMiner implements InterfaceTagMiner {
 
 	private final String TAG;
 
 	private final String REGEX;
 
-	public TagMiner(final String regex, final String tag) {
+	public RegexTagMiner(final String regex, final String tag) {
 		this.TAG = tag;
 		this.REGEX = regex;
 	}
 
+	@Override
 	public Phrase tagPhrase(Phrase phrase) {
 		
 		// Create a Pattern object
