@@ -149,7 +149,7 @@ public class InputManager implements InterfaceInputManager {
 	private WebPage warcRecordToWebPage(WarcRecord record) {
 		WebPage webPage = null;
 
-		String trecID = record.getHeader("WARC-TREC-ID").value;
+		String trecID = (record.getHeader("WARC-TREC-ID").value.split("-"))[3];
 		String pageHtml = streamToString(record.getPayloadContent());
 		webPage = new WebPage(trecID, pageHtml);
 
