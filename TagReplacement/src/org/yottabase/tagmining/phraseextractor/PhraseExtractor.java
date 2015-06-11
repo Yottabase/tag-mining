@@ -12,21 +12,27 @@ import org.yottabase.tagmining.core.WebPage;
 
 public class PhraseExtractor implements InterfacePhraseExtractor {
 	
-	private static final String PUNCTUATION = "\\.?!;";
-
+	/*
+	 * Reference: https://html.spec.whatwg.org/multipage/semantics.html
+	 */
+	
+	private static final String PUNCTUATION = "(?<=[.?!;] )";
+	
 	@Override
 	public List<Phrase> extractPhrases(WebPage htmlPage) {
 		
 		Document document = Jsoup.parse( htmlPage.getPageHtml() );
 		List<Phrase> phrases = new ArrayList<Phrase>();
 		
-		Elements textEl = document.select("p, div");
+		Elements textEl = document.select("div,p,h1,h2,h3,h4,h5,h6");
 		
 		for(Element textNode: textEl){
 			
 			for(String text : textNode.text().split(PUNCTUATION)){
 				
-				if(text.length() == 0) continue;
+				text = text.trim();
+				
+				if(text.length() < 3) continue;
 				
 				phrases.add(new Phrase(htmlPage.getTrecID(), text));
 				
