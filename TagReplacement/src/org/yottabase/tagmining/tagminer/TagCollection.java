@@ -16,4 +16,6 @@ public class TagCollection {
 
 	public final static String TAG_MONEY = "MONEY";
 
+	public static final String TAG_TIME = "TIME";
+
 }

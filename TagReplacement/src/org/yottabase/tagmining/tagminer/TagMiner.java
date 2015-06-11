@@ -18,22 +18,21 @@ public class TagMiner {
 	}
 
 	public Phrase tagPhrase(Phrase phrase) {
+		String taggedPhrase = phrase.getTaggedPhrase();
 		
 		// Create a Pattern object
 		Pattern r = Pattern.compile(this.REGEX);
 
 		// Now create matcher object.
-		Matcher m = r.matcher(phrase.getPhrase());
-
-		for (int i = 0; i < m.groupCount(); i++) {
-			if (m.find()) {
-				System.out.println("Found value: " + m.group(i));
-				String taggedPhrase = phrase.getPhrase();
-				phrase.setTaggedPhrase(taggedPhrase.replace(m.group(i), "#" + this.TAG));
-				phrase.addTaggedWord(new TaggedWord(m.group(i), this.TAG));
-			}
+		Matcher m = r.matcher(taggedPhrase);
+	
+		while (m.find()) {
+			System.out.println( "Found value:   " + m.group(0) + "    TAG   : " + this.TAG);
+			
+			phrase.setTaggedPhrase( taggedPhrase.replace( m.group(0), "#" + this.TAG) );
+			phrase.addTaggedWord(new TaggedWord(m.group(0), this.TAG));
 		}
-
+		
 		return phrase;
 	}
 

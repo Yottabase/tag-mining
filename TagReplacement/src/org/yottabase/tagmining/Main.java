@@ -28,6 +28,8 @@ public class Main {
 		
 		WebPage webPage = null;
 		
+//		int taggedItem=0;
+		
 		while( (webPage = inputManager.getNextWebPage()) != null ){
 			
 			List<Phrase> phrases = phraseExtractor.extractPhrases(webPage);
@@ -35,7 +37,10 @@ public class Main {
 			for(Phrase phrase : phrases){
 			
 				phrase = tagMiner.tagPhrase(phrase);
-			
+				if(!phrase.getTaggedWords().isEmpty()){
+//					taggedItem++;
+//					System.out.println(taggedItem);
+				}
 				//TODO aggiungere salvataggio su file
 				//System.out.println(phrase);
 			}

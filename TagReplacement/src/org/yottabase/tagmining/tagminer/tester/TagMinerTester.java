@@ -1,29 +1,22 @@
 package org.yottabase.tagmining.tagminer.tester;
 
 import org.yottabase.tagmining.core.Phrase;
-import org.yottabase.tagmining.tagminer.RegExCollection;
-import org.yottabase.tagmining.tagminer.TagCollection;
-import org.yottabase.tagmining.tagminer.TagMiner;
+import org.yottabase.tagmining.tagminer.TagMinerAggregate;
 
 public class TagMinerTester {
 
 	
 	public static void main(String[] args) {
 		
-		//InterfaceTagMiner tagMiner = new DateTagMiner();
-		TagMiner dateMiner = new TagMiner(RegExCollection.REGEX_MAIL, TagCollection.TAG_MAIL);
 		
-		//InterfaceTagMiner tagMiner = new TagMinerAggregate();
+		Phrase phrase = new Phrase("00003", "ciao@bello.com ciao 20m 15s   (800)-555-2468     10h 20m 30s  ale@gmail.com");
 		
-		Phrase phrase = new Phrase("00003", "ciao@bello.com ciao 20m 15s");
-		//Phrase phrase = new Phrase("00003", "foo@demo.net");
+		TagMinerAggregate tagMiner = new TagMinerAggregate();
 
-		Phrase taggedPhrase = dateMiner.tagPhrase(phrase);
+		Phrase taggedPhrase = tagMiner.tagPhrase(phrase);
 		
 		System.out.println(taggedPhrase);
 		
 	}
-	
-	
-	
+		
 }

@@ -15,13 +15,17 @@ public class RegExCollection {
 	
 	public final static String REGEX_MAIL = property.get("expr.mail");
 	
-//	public final static String REGEX_PHONENUMBER_IT = "";
-//	public final static String REGEX_PHONENUMBER_USA = "";
-//	
+	public final static String REGEX_PHONENUMBER_USA = property.get("expr.phone");
+	
+	public final static String REGEX_MONEY = property.get("expr.money");
+
+	public static final String REGEX_TIME = property.get("expr.time");
+
+	public final static String REGEX_UNIT = property.get("expr.unit");
+
 //	public final static String REGEX_ZIPCODE = "";
-//	
-//	public final static String REGEX_UNIT = "";
-//	
-//	public final static String REGEX_MONEY = "";
+
+
+
 	
 }
