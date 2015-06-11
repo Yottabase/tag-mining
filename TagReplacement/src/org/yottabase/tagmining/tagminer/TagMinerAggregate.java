@@ -10,7 +10,7 @@ public class TagMinerAggregate implements InterfaceTagMiner {
 	private List<RegexTagMiner> tagMiners = new LinkedList<RegexTagMiner>();
 	
 	public TagMinerAggregate() {
-		RegexTagMiner dateMiner = new RegexTagMiner(RegExCollection.REGEX_DATE, TagCollection.TAG_DATE);
+		RegexTagMiner dateMiner = new RegexTagMiner(RegexCollection.REGEX_DATE, TagCollection.TAG_DATE);
 		
 		tagMiners.add( dateMiner );
 		

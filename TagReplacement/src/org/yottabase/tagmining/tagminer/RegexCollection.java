@@ -2,7 +2,7 @@ package org.yottabase.tagmining.tagminer;
 
 import org.yottabase.tagmining.core.PropertyReader;
 
-public class RegExCollection {
+public class RegexCollection {
 	
 	private final static String PROPERTY_FILE_NAME = "ereg.properties";
 	
