@@ -24,11 +24,17 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		
 		PropertyReader properties = new PropertyReader(CONFIG_PROPERTIES);
-		InterfaceInputManager inputManager = new InputManager(properties.get(PROP_INPUT));
+		
+		processFile(properties.get(PROP_INPUT), properties.get(PROP_OUTPUT), "test");
+		
+	}
+	
+	public static void processFile(String inputFile, String outputFolder, String fileId) throws IOException{
+		InterfaceInputManager inputManager = new InputManager(inputFile);
 		InterfacePhraseExtractor phraseExtractor = new PhraseExtractor();
 		TagMinerAggregate tagMiner = new TagMinerAggregate();
 		
-		OutputManager outputWriter = new OutputManager(properties.get(PROP_OUTPUT), "test");
+		OutputManager outputWriter = new OutputManager(outputFolder, fileId);
 		
 		
 		WebPage webPage = null;
