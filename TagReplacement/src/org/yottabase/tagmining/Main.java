@@ -12,6 +12,7 @@ import org.yottabase.tagmining.parsing.InputManager;
 import org.yottabase.tagmining.phraseextractor.InterfacePhraseExtractor;
 import org.yottabase.tagmining.phraseextractor.PhraseExtractor;
 import org.yottabase.tagmining.tagminer.TagMinerAggregate;
+import org.yottabase.tagmining.utils.Timer;
 
 public class Main {
 	
@@ -30,6 +31,9 @@ public class Main {
 	}
 	
 	public static void processFile(String inputFile, String outputFolder, String fileId) throws IOException{
+		Timer timerExtraction = new Timer();
+		Timer timerTagMining = new Timer();
+		
 		InterfaceInputManager inputManager = new InputManager(inputFile);
 		InterfacePhraseExtractor phraseExtractor = new PhraseExtractor();
 		TagMinerAggregate tagMiner = new TagMinerAggregate();
@@ -41,16 +45,23 @@ public class Main {
 		
 		while( (webPage = inputManager.getNextWebPage()) != null ){
 			
+			timerExtraction.startOrRestart();
 			List<Phrase> phrases = phraseExtractor.extractPhrases(webPage);
+			timerExtraction.pause();
 			
 			for(Phrase phrase : phrases){
 			
+				timerTagMining.startOrRestart();
 				phrase = tagMiner.tagPhrase(phrase);
+				timerTagMining.pause();
 			
 				outputWriter.writePhrase(phrase);
 			}
+			
 		}
 		
 		System.out.println(phraseExtractor.getStats());
+		System.out.println("Extraction elapsed time: " + timerExtraction.getElapsedTime() + " ms");
+		System.out.println("Tagging elapsed time: " + timerTagMining.getElapsedTime() + " ms");
 	}
 }
