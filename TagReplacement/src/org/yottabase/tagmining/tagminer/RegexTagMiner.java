@@ -54,7 +54,7 @@ public class RegexTagMiner implements InterfaceTagMiner {
 		Matcher m = r.matcher(taggedPhrase);
 
 		while (m.find()) {
-			System.out.println("Found value: " + m.group(0));
+//			System.out.println("Found value: " + m.group(0));
 			
 			taggedPhrase = taggedPhrase.replace(m.group(0), "#" + this.tag);
 			phrase.addTaggedWord(new TaggedWord(m.group(0), this.tag));

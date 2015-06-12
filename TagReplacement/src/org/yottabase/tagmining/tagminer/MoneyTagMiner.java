@@ -20,8 +20,6 @@ public class MoneyTagMiner extends RegexTagMiner {
 		String symbs = super.properties.get(SYMBS);
 		String values = (words + "," + codes + "," + symbs).replaceAll(",", "|");
 		
-		System.out.println(values);
-		
 		super.setTag(TAG_NAME);
 		super.setRegex(String.format(this.regexTemplate, values, values));
 		
