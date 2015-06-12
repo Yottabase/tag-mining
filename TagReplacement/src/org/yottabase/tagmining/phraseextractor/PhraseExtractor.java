@@ -34,6 +34,8 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	private static final String[] SKIPPED_TAGS = {"body", "head", "meta", "figure", "img", "script", "style", "option" };
 	
 	private static final Integer MIN_PHRASE_LENGTH = 5;
+
+	private static final int PHRASE_MIN_WORDS = 3;
 	
 	@Override
 	public List<Phrase> extractPhrases(WebPage htmlPage) {
@@ -72,7 +74,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				for(String t : text.split(PUNCTUATION)){
 					t = t.trim();
 					if(t.length() < MIN_PHRASE_LENGTH) continue;
-					if(! t.contains(" ")) continue;
+					if(t.split("\\s").length < PHRASE_MIN_WORDS) continue; 
 					
 					phrases.add(new Phrase(htmlPage.getTrecID(), t));
 				}
