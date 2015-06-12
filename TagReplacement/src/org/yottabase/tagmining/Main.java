@@ -25,7 +25,7 @@ public class Main {
 		
 		PropertyReader properties = new PropertyReader(CONFIG_PROPERTIES);
 		
-		processFile(properties.get(PROP_INPUT), properties.get(PROP_OUTPUT), "test");
+		processFile(properties.get(PROP_INPUT), properties.get(PROP_OUTPUT), "00");
 		
 	}
 	
