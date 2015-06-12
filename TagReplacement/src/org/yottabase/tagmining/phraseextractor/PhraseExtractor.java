@@ -71,7 +71,8 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				
 				for(String t : text.split(PUNCTUATION)){
 					t = t.trim();
-					if(t.length() < MIN_CHARS || t.split("\\s").length < MIN_WORDS) continue;
+					if(t.length() < MIN_CHARS) continue;
+					if(t.split("\\s").length < MIN_WORDS) continue;
 					
 					phrases.add(new Phrase(htmlPage.getTrecID(), t));
 				}
