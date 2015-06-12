@@ -7,12 +7,12 @@ import org.yottabase.tagmining.core.Phrase;
 
 public class TagMinerAggregate implements InterfaceTagMiner {
 
-	private List<RegexTagMiner> tagMiners = new LinkedList<RegexTagMiner>();
+	private List<InterfaceTagMiner> tagMiners = new LinkedList<InterfaceTagMiner>();
 	
 	public TagMinerAggregate() {
-		RegexTagMiner dateMiner = new RegexTagMiner(RegexCollection.REGEX_DATE, TagCollection.TAG_DATE);
+		InterfaceTagMiner moneyMiner = new MoneyTagMiner();
 		
-		tagMiners.add( dateMiner );
+		tagMiners.add( moneyMiner );
 		
 	}
 
@@ -21,7 +21,7 @@ public class TagMinerAggregate implements InterfaceTagMiner {
 		
 		Phrase phrase = originalPhrase;
 		
-		for(RegexTagMiner tagMiner : tagMiners){
+		for(InterfaceTagMiner tagMiner : tagMiners){
 			
 			phrase = tagMiner.tagPhrase(phrase);
 			
