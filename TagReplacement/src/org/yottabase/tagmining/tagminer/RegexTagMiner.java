@@ -17,6 +17,16 @@ public class RegexTagMiner implements InterfaceTagMiner {
 	
 	protected PropertyReader properties = new PropertyReader(VALUES_PROPERTY_FILE);
 
+	public RegexTagMiner() {
+		super();
+	}
+
+	public RegexTagMiner(String tag, String regex) {
+		super();
+		this.tag = tag;
+		this.regex = regex;
+	}
+
 	public String getTag() {
 		return tag;
 	}

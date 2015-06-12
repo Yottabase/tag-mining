@@ -11,7 +11,7 @@ public class TagMinerTester {
 		
 		InterfaceTagMiner dateMiner = new TagMinerAggregate();
 		
-		Phrase phrase = new Phrase("00003", "ciao 12-mag-05 l'oggetto costa 50.3 usd ma solo per oggi, domani costa £5");
+		Phrase phrase = new Phrase("00003", "ciao 12-mag-05 12:00 1:31 l'oggetto costa 50.3 usd ma solo per oggi, domani costa £5 www.libero.com 192.168.1.1");
 		
 		
 		Phrase taggedPhrase = dateMiner.tagPhrase(phrase);

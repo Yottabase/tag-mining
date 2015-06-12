@@ -10,9 +10,13 @@ public class TagMinerAggregate implements InterfaceTagMiner {
 	private List<InterfaceTagMiner> tagMiners = new LinkedList<InterfaceTagMiner>();
 	
 	public TagMinerAggregate() {
-		InterfaceTagMiner moneyMiner = new MoneyTagMiner();
-		
-		tagMiners.add( moneyMiner );
+		 
+		tagMiners.add( new MoneyTagMiner() );
+		tagMiners.add( new UrlTagMiner() );
+		tagMiners.add( new DomainTagMiner() );
+		tagMiners.add( new MailTagMiner() );
+		tagMiners.add( new IpAddressTagMiner() );
+		tagMiners.add( new TimeTagMiner() );
 		
 	}
 
