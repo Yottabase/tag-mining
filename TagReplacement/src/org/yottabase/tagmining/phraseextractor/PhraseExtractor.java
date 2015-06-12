@@ -67,7 +67,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				
 				String text = e.getNodeValue();
 				if(text.length() < MIN_PHRASE_LENGTH) continue;
-				text = text.replaceAll("\\r\\n|\\r|\\n", " ");
+				text = text.replaceAll("\\r\\n|\\r|\\n| +", " ");
 				
 				for(String t : text.split(PUNCTUATION)){
 					t = t.trim();
