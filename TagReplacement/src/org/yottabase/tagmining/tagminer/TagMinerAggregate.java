@@ -20,6 +20,7 @@ public class TagMinerAggregate implements InterfaceTagMiner {
 		tagMiners.add( new MacAddressTagMiner() );
 		tagMiners.add( new UnitTagMiner() );
 		tagMiners.add( new PhoneTagMiner() );
+		tagMiners.add( new DateTagMiner() );
 		
 	}
 
