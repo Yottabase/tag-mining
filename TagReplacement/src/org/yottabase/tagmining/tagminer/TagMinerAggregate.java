@@ -5,18 +5,19 @@ import java.util.List;
 
 import org.yottabase.tagmining.core.Phrase;
 
-public class TagMinerAggregate {
+public class TagMinerAggregate implements InterfaceTagMiner {
 
-	private List<TagMiner> tagMiners = new LinkedList<TagMiner>();
+	private List<RegexTagMiner> tagMiners = new LinkedList<RegexTagMiner>();
 	
 	public TagMinerAggregate() {
-		TagMiner dateMiner = new TagMiner(RegExCollection.REGEX_DATE, TagCollection.TAG_DATE);
-		TagMiner mailMiner = new TagMiner(RegExCollection.REGEX_MAIL, TagCollection.TAG_MAIL);
-		TagMiner ipMiner = new TagMiner(RegExCollection.REGEX_IP, TagCollection.TAG_IP);
-		TagMiner phonepUSAMiner = new TagMiner(RegExCollection.REGEX_PHONENUMBER_USA, TagCollection.TAG_PHONENUMBER);
-		TagMiner timeMiner = new TagMiner(RegExCollection.REGEX_TIME, TagCollection.TAG_TIME);
-		TagMiner moneyMiner = new TagMiner(RegExCollection.REGEX_MONEY, TagCollection.TAG_MONEY);
-		TagMiner unitMiner = new TagMiner(RegExCollection.REGEX_UNIT, TagCollection.TAG_UNIT);
+		RegexTagMiner dateMiner = new RegexTagMiner(RegexCollection.REGEX_DATE, TagCollection.TAG_DATE);
+		RegexTagMiner mailMiner = new RegexTagMiner(RegexCollection.REGEX_MAIL, TagCollection.TAG_MAIL);
+		RegexTagMiner ipMiner = new RegexTagMiner(RegexCollection.REGEX_IP, TagCollection.TAG_IP);
+		RegexTagMiner phonepUSAMiner = new RegexTagMiner(RegexCollection.REGEX_PHONENUMBER_USA, TagCollection.TAG_PHONENUMBER);
+		RegexTagMiner timeMiner = new RegexTagMiner(RegexCollection.REGEX_TIME, TagCollection.TAG_TIME);
+		RegexTagMiner moneyMiner = new RegexTagMiner(RegexCollection.REGEX_MONEY, TagCollection.TAG_MONEY);
+		RegexTagMiner unitMiner = new RegexTagMiner(RegexCollection.REGEX_UNIT, TagCollection.TAG_UNIT);
+
 		
 		tagMiners.add( dateMiner );
 		tagMiners.add( mailMiner );
@@ -28,11 +29,12 @@ public class TagMinerAggregate {
 		
 	}
 
+	@Override
 	public Phrase tagPhrase(Phrase originalPhrase) {
 		
 		Phrase phrase = originalPhrase;
 		
-		for(TagMiner tagMiner : tagMiners){
+		for(RegexTagMiner tagMiner : tagMiners){
 			
 			phrase = tagMiner.tagPhrase(phrase);
 			

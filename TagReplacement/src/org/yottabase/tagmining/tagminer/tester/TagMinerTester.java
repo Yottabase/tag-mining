@@ -8,7 +8,6 @@ public class TagMinerTester {
 	
 	public static void main(String[] args) {
 		
-		
 		Phrase phrase = new Phrase("00003", "ciao@bello.com ciao 20m 15s   (800)-555-2468     10h 20m 30s  ale@gmail.com");
 		
 		TagMinerAggregate tagMiner = new TagMinerAggregate();

@@ -6,17 +6,18 @@ import java.util.regex.Pattern;
 import org.yottabase.tagmining.core.Phrase;
 import org.yottabase.tagmining.core.TaggedWord;
 
-public class TagMiner {
+public class RegexTagMiner implements InterfaceTagMiner {
 
 	private final String TAG;
 
 	private final String REGEX;
 
-	public TagMiner(final String regex, final String tag) {
+	public RegexTagMiner(final String regex, final String tag) {
 		this.TAG = tag;
 		this.REGEX = regex;
 	}
 
+	@Override
 	public Phrase tagPhrase(Phrase phrase) {
 		String taggedPhrase = phrase.getTaggedPhrase();
 		
@@ -25,7 +26,7 @@ public class TagMiner {
 
 		// Now create matcher object.
 		Matcher m = r.matcher(taggedPhrase);
-	
+		
 		while (m.find()) {
 			System.out.println( "Found value:   " + m.group(0) + "    TAG   : " + this.TAG);
 			
