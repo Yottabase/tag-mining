@@ -18,4 +18,6 @@ public class TagCollection {
 
 	public static final String TAG_TIME = "TIME";
 
+	public static final String TAG_URL = "URL";
+
 }

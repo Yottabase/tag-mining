@@ -22,7 +22,7 @@ public class RegexTagMiner implements InterfaceTagMiner {
 		String taggedPhrase = phrase.getTaggedPhrase();
 		
 		// Create a Pattern object
-		Pattern r = Pattern.compile(this.REGEX);
+		Pattern r = Pattern.compile(this.REGEX, Pattern.CASE_INSENSITIVE);
 
 		// Now create matcher object.
 		Matcher m = r.matcher(taggedPhrase);

@@ -24,5 +24,7 @@ public class RegexCollection {
 	public final static String REGEX_UNIT = property.get("expr.unit");
 	
 	public final static String REGEX_MONEY = property.get("expr.money");
+
+	public static final String REGEX_URL = property.get("expr.url");
 	
 }
