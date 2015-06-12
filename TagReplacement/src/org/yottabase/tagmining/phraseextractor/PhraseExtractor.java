@@ -36,6 +36,11 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	private static final int MIN_WORDS = 3;
 	private static final int MIN_CHARS = 5;
 	
+	private int skipByLiATags = 0;
+	private int skipByBlacklistedTags = 0;
+	private int skipByFewChars = 0;
+	private int skipByFewWords = 0;
+	
 	@Override
 	public List<Phrase> extractPhrases(WebPage htmlPage) {
 		
@@ -57,11 +62,17 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				Node e = nodes.item(i);
 				
 				tagName = e.getParentNode().getNodeName();
-				if(Arrays.asList(SKIPPED_TAGS).contains(tagName)) continue;
+				if(Arrays.asList(SKIPPED_TAGS).contains(tagName)) {
+					this.skipByBlacklistedTags++;
+					continue;
+				}
 				
 				try{
 					parentTagName = e.getParentNode().getParentNode().getNodeName();
-					if(tagName.equals("a") && parentTagName.equals("li")) continue;	
+					if(tagName.equals("a") && parentTagName.equals("li")) {
+						this.skipByLiATags++;
+						continue;	
+					}
 				}catch(NullPointerException e1){
 					//This exception is not relevant
 				}
@@ -71,8 +82,15 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				
 				for(String t : text.split(PUNCTUATION)){
 					t = t.trim();
-					if(t.length() < MIN_CHARS) continue;
-					if(t.split("\\s").length < MIN_WORDS) continue;
+					if(t.length() < MIN_CHARS) {
+						this.skipByFewChars++;
+						continue;
+					}
+					
+					if(t.split("\\s").length < MIN_WORDS) {
+						this.skipByFewWords++;
+						continue;
+					}
 					
 					phrases.add(new Phrase(htmlPage.getTrecID(), t));
 				}
@@ -86,5 +104,16 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 		}
 		
 		return phrases;
+	}
+	
+	public String getStats(){
+		return String.format(
+				  "skipByLiATags: %s\n"
+				+ "skipByBlacklistedTags: %s\n"
+				+ "skipByFewChars: %s\n"
+				+ "skipByFewWords: %s\n ", 
+			this.skipByLiATags, this.skipByBlacklistedTags, this.skipByFewChars, this.skipByFewWords
+		);
+				
 	}
 }

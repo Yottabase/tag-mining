@@ -9,4 +9,6 @@ public interface InterfacePhraseExtractor {
 
 	public List<Phrase> extractPhrases(WebPage htmlPage);
 	
+	public String getStats();
+	
 }

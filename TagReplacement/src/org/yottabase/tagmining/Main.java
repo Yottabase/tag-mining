@@ -50,5 +50,7 @@ public class Main {
 				outputWriter.writePhrase(phrase);
 			}
 		}
+		
+		System.out.println(phraseExtractor.getStats());
 	}
 }
