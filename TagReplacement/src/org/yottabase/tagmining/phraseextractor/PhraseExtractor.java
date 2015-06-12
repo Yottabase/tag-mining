@@ -27,7 +27,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	 * Reference: https://html.spec.whatwg.org/multipage/semantics.html
 	 */
 	
-	private static final String PUNCTUATION = "(?<=[\\.?!;] )";
+	private static final String PUNCTUATION = "(?<=[\\.?!;]\\s)";
 	
 	private static final String XPATH_EXTRACTOR = "//body//text()";
 	
@@ -67,7 +67,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				
 				String text = e.getNodeValue();
 				if(text.length() < MIN_PHRASE_LENGTH) continue;
-				text = text.replaceAll("\\r\\n|\\r|\\n| +", " ");
+				text = text.replaceAll("\\r\\n|\\r|\\n|\\s+", " ");
 				
 				for(String t : text.split(PUNCTUATION)){
 					t = t.trim();
