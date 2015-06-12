@@ -27,15 +27,14 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	 * Reference: https://html.spec.whatwg.org/multipage/semantics.html
 	 */
 	
-	private static final String PUNCTUATION = "(?<=[\\.?!;]\\s)";
+	private static final String PUNCTUATION = "(?<=[\\.?!;|]\\s)";
 	
 	private static final String XPATH_EXTRACTOR = "//body//text()";
 	
 	private static final String[] SKIPPED_TAGS = {"body", "head", "meta", "figure", "img", "script", "style", "option" };
-	
-	private static final Integer MIN_PHRASE_LENGTH = 5;
 
-	private static final int PHRASE_MIN_WORDS = 3;
+	private static final int MIN_WORDS = 3;
+	private static final int MIN_CHARS = 5;
 	
 	@Override
 	public List<Phrase> extractPhrases(WebPage htmlPage) {
@@ -68,13 +67,11 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				}
 				
 				String text = e.getNodeValue();
-				if(text.length() < MIN_PHRASE_LENGTH) continue;
 				text = text.replaceAll("\\r\\n|\\r|\\n|\\s+", " ");
 				
 				for(String t : text.split(PUNCTUATION)){
 					t = t.trim();
-					if(t.length() < MIN_PHRASE_LENGTH) continue;
-					if(t.split("\\s").length < PHRASE_MIN_WORDS) continue; 
+					if(t.length() < MIN_CHARS || t.split("\\s").length < MIN_WORDS) continue;
 					
 					phrases.add(new Phrase(htmlPage.getTrecID(), t));
 				}
