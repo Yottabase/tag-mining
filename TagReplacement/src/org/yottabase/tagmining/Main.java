@@ -1,5 +1,7 @@
 package org.yottabase.tagmining;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.List;
 
@@ -16,17 +18,35 @@ import org.yottabase.tagmining.utils.Timer;
 
 public class Main {
 	
-	private final static String CONFIG_PROPERTIES = "config.properties";
+	private final static String INPUT_FILE_EXT = ".warc";
 
 	private final static String PROP_INPUT = "dataset.input";
 	
 	private final static String PROP_OUTPUT = "dataset.output";
+	
+	private final static String CONFIG_PROPERTIES = "config.properties";
 
 	public static void main(String[] args) throws IOException {
-		
 		PropertyReader properties = new PropertyReader(CONFIG_PROPERTIES);
+		String inputPath = properties.get(PROP_INPUT);
+		String outputPath = properties.get(PROP_OUTPUT);
 		
-		processFile(properties.get(PROP_INPUT), properties.get(PROP_OUTPUT), "00");
+		File[] files = (new File(inputPath).listFiles(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.endsWith(INPUT_FILE_EXT);
+			}
+		}));
+		
+		for (File file : files) {
+			String filePath = file.getPath();
+			String fileName = file.getName();
+			String[] fileNameSplit = fileName.split("-");
+			String fileId = (fileNameSplit.length != 0) ? fileNameSplit[3] : fileName.split(".")[0];
+			
+			processFile(filePath, outputPath, fileId);
+			
+		}
 		
 	}
 	
