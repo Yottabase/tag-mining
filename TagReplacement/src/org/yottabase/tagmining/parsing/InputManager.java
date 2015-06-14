@@ -1,10 +1,6 @@
 package org.yottabase.tagmining.parsing;
 
-import java.io.File;
 import java.io.InputStream;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
 
 import org.jwat.warc.WarcRecord;
@@ -14,44 +10,11 @@ public class InputManager implements InterfaceInputManager {
 
 	private InterfaceParser parser;
 
-	private List<String> inputSources;
-
-	private Iterator<String> iter;
-
 	private InterfaceValidator validator;
 
-	public InputManager(String... paths) {
+	public InputManager(String inputFilePath) {
 		this.validator = new WarcRecordValidator();
-
-		this.inputSources = new LinkedList<String>();
-		for (String p : paths)
-			this.findInputSources(new File(p));
-
-		this.iter = inputSources.iterator();
-
-		this.loadNextInputSource();
-	}
-
-	/**
-	 * Ricerca tutte le potenziali sorgenti di input Una sorgente di input è un
-	 * file con estensione .warc Se il file è una cartella, vengono ricercate
-	 * tutte le sorgente di input ad essa radicate, altrimenti il file stesso è
-	 * considerata una sorgente di input
-	 * 
-	 * @param file
-	 */
-	private void findInputSources(File file) {
-		String path = file.getPath();
-
-		if (file.isFile()) {
-			if (path.endsWith(".warc"))
-				inputSources.add(path);
-		} else {
-			File[] children = file.listFiles();
-
-			for (File f : children)
-				findInputSources(f);
-		}
+		this.parser = new WarcParser(inputFilePath);
 	}
 
 	/**
@@ -72,18 +35,10 @@ public class InputManager implements InterfaceInputManager {
 			page = null;
 
 			/*
-			 * Se esistente prendi un record non nullo Un record è nullo quando
-			 * l'input corrente è terminato Se ci sono altri input ma sono vuoti
-			 * i record successivi possono continuare ad essere nulli
+			 * Se il record è null il file è terminato dunque il parser viene
+			 * chiuso
 			 */
-			while ((record = parser.getNextRecord()) == null && this.hasNextInputSource())
-				loadNextInputSource();
-
-			/*
-			 * Se il miglior record pescato tra tutti i file di input rimanenti
-			 * è comunque nullo allora l'input è terminato: si chiude il parser
-			 */
-			if (record == null) {
+			if ((record = parser.getNextRecord()) == null) {
 				parser.close();
 				return null;
 			}
@@ -99,45 +54,6 @@ public class InputManager implements InterfaceInputManager {
 		} while (page == null);
 
 		return page;
-	}
-
-	/**
-	 * Restituisce true se all'interno dei path configurati vi sono ulteriori
-	 * sorgenti di input a disposizione, false altrimenti.
-	 * 
-	 * @return
-	 */
-	private boolean hasNextInputSource() {
-		return iter.hasNext();
-	}
-
-	/**
-	 * Restituisce la prossima sorgente di input disponibile.
-	 * 
-	 * @return
-	 */
-	private String getNextInputSource() {
-		return iter.next();
-	}
-
-	/**
-	 * Carica la prossima sorgente di input
-	 */
-	private void loadNextInputSource() {
-		String inputSource = this.getNextInputSource();
-		loadInputSource(inputSource);
-
-		System.out.println("Analisi del file: " + inputSource);
-	}
-
-	/**
-	 * Effettua il caricamento della corrente sorgente di input
-	 */
-	private void loadInputSource(String inputSource) {
-		if (this.parser != null)
-			this.parser.close();
-
-		this.parser = new WarcParser(inputSource);
 	}
 
 	/**

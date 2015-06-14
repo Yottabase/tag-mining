@@ -1,2 +1,4 @@
+# must be a directory
 dataset.input=
+# must be a directory
 dataset.output=
