@@ -85,7 +85,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				text = text.replaceAll(REGEX_BLANKS, " ");
 				
 				for(String t : text.split(PUNCTUATION)){
-					t = text.replaceAll(REGEX_TRIM, "");
+					t = t.replaceAll(REGEX_TRIM, "");
 					
 					if(t.length() < MIN_CHARS) {
 						this.skipByFewChars++;
