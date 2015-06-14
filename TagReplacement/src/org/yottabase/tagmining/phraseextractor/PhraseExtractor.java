@@ -31,9 +31,9 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	private static final String XPATH_EXTRACTOR = "//body//text()";
 	
-	private static final String[] SKIPPED_TAGS = {"body", "head", "meta", "figure", "img", "script", "style", "option" };
+	private static final String[] SKIPPED_TAGS = {"head", "meta", "figure", "img", "script", "style", "option" };
 
-	private static final int MIN_WORDS = 3;
+	private static final int MIN_WORDS = 0;
 	private static final int MIN_CHARS = 5;
 	
 	private int skipByLiATags = 0;
@@ -82,6 +82,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				
 				for(String t : text.split(PUNCTUATION)){
 					t = t.trim();
+					System.out.println(t.length());
 					if(t.length() < MIN_CHARS) {
 						this.skipByFewChars++;
 						continue;
