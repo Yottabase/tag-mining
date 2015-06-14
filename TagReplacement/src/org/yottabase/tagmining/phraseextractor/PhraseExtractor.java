@@ -35,7 +35,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	private static final String[] SKIPPED_TAGS = {"head", "meta", "figure", "img", "script", "style", "option" };
 
-	private static final int MIN_WORDS = 0;
+	private static final int MIN_WORDS = 3;
 	private static final int MIN_CHARS = 5;
 	
 	private int skipByLiATags = 0;
