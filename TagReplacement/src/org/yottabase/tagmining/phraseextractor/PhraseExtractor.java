@@ -40,10 +40,12 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	private static final int MIN_WORDS = 3;
 	private static final int MIN_CHARS = 5;
 	
-	private int skipByLiATags = 0;
-	private int skipByBlacklistedTags = 0;
-	private int skipByFewChars = 0;
-	private int skipByFewWords = 0;
+	private int textsSkippedByLiATags = 0;
+	private int textsSkippedByBlacklistedTags = 0;
+	private int phrasesSkippedByFewChars = 0;
+	private int phrasesSkippedByFewWords = 0;
+	private int textsFound = 0;
+	private int acceptedPhrasesFound = 0;
 	
 	@Override
 	public List<Phrase> extractPhrases(WebPage htmlPage) {
@@ -58,6 +60,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 			
 			XPath xpath = XPathFactory.newInstance().newXPath();
 			NodeList nodes = (NodeList) xpath.evaluate(XPATH_EXTRACTOR, doc, XPathConstants.NODESET);
+			this.textsFound += nodes.getLength();
 			
 			for (int i = 0; i < nodes.getLength(); ++i) {
 				
@@ -67,14 +70,14 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				
 				tagName = e.getParentNode().getNodeName();
 				if(Arrays.asList(SKIPPED_TAGS).contains(tagName)) {
-					this.skipByBlacklistedTags++;
+					this.textsSkippedByBlacklistedTags++;
 					continue;
 				}
 				
 				try{
 					parentTagName = e.getParentNode().getParentNode().getNodeName();
 					if(tagName.equals("a") && parentTagName.equals("li")) {
-						this.skipByLiATags++;
+						this.textsSkippedByLiATags++;
 						continue;	
 					}
 				}catch(NullPointerException e1){
@@ -89,18 +92,19 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				text = text.replaceAll(REGEX_BLANKS, " ");
 				
 				for(String t : text.split(PUNCTUATION)){
+					
 					t = t.replaceAll(REGEX_TRIM, "");
 					
 					if(t.length() < MIN_CHARS) {
-						this.skipByFewChars++;
+						this.phrasesSkippedByFewChars++;
 						continue;
 					}
 					
 					if(t.split("\\s").length < MIN_WORDS) {
-						this.skipByFewWords++;
+						this.phrasesSkippedByFewWords++;
 						continue;
 					}
-					
+					this.acceptedPhrasesFound++;
 					phrases.add(new Phrase(htmlPage.getTrecID(), t + tagName));
 				}
 			}
@@ -117,11 +121,14 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	public String getStats(){
 		return String.format(
-				  "skipByLiATags: %s\n"
-				+ "skipByBlacklistedTags: %s\n"
-				+ "skipByFewChars: %s\n"
-				+ "skipByFewWords: %s\n ", 
-			this.skipByLiATags, this.skipByBlacklistedTags, this.skipByFewChars, this.skipByFewWords
+				  "textsSkippedByLiATags:\t\t%s\n"
+				+ "textsSkippedByBlacklistedTags:\t%s\n"
+				+ "textsFound:\t\t\t%s\n"
+				+ "phrasesSkippedByFewChars:\t%s\n"
+				+ "phrasesSkippedByFewWords:\t%s\n" 
+				+ "acceptedPhrasesFound:\t\t%s\n", 
+			this.textsSkippedByLiATags, this.textsSkippedByBlacklistedTags, this.textsFound, 
+			this.phrasesSkippedByFewChars, this.phrasesSkippedByFewWords,  this.acceptedPhrasesFound
 		);
 				
 	}
