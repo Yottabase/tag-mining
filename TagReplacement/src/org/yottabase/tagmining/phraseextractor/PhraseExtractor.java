@@ -31,6 +31,8 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	private static final String REGEX_BLANKS = "\\s+";
 	
+	private static final String REGEX_TRIM = "(\\s|\\t)$|^(\\s|\\t)";
+	
 	private static final String XPATH_EXTRACTOR = "//body//text()";
 	
 	private static final String[] SKIPPED_TAGS = {"head", "meta", "figure", "img", "script", "style", "option" };
@@ -83,7 +85,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				text = text.replaceAll(REGEX_BLANKS, " ");
 				
 				for(String t : text.split(PUNCTUATION)){
-					t = t.trim();
+					t = text.replaceAll(REGEX_TRIM, "");
 					
 					if(t.length() < MIN_CHARS) {
 						this.skipByFewChars++;
