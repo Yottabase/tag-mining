@@ -29,7 +29,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	private static final String PUNCTUATION = "(?<=[\\.?!;|]\\s)";
 	
-	private static final String REGEX_BLANKS = "(\\r\n|\\r|\\n|\\s){2,}";
+	private static final String REGEX_BLANKS = "\\s+";
 	
 	private static final String XPATH_EXTRACTOR = "//body//text()";
 	
