@@ -31,7 +31,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	private static final String REGEX_BLANKS = "\\s+";
 	
-	private static final String REGEX_TRIM = "(\\s|\\t)$|^(\\s|\\t)";
+	private static final String REGEX_TRIM = "(\\W\\D)+$|^(\\W\\D)+";
 	
 	private static final String XPATH_EXTRACTOR = "//body//text()";
 	
@@ -82,6 +82,10 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				}
 				
 				String text = e.getNodeValue();
+				
+				
+				text += tagName;
+				
 				text = text.replaceAll(REGEX_BLANKS, " ");
 				
 				for(String t : text.split(PUNCTUATION)){
@@ -97,7 +101,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 						continue;
 					}
 					
-					phrases.add(new Phrase(htmlPage.getTrecID(), t));
+					phrases.add(new Phrase(htmlPage.getTrecID(), t + tagName));
 				}
 			}
 			
