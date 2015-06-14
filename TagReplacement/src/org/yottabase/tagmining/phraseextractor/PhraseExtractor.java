@@ -86,9 +86,6 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				
 				String text = e.getNodeValue();
 				
-				
-				text += tagName;
-				
 				text = text.replaceAll(REGEX_BLANKS, " ");
 				
 				for(String t : text.split(PUNCTUATION)){
@@ -105,7 +102,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 						continue;
 					}
 					this.acceptedPhrasesFound++;
-					phrases.add(new Phrase(htmlPage.getTrecID(), t + tagName));
+					phrases.add(new Phrase(htmlPage.getTrecID(), t));
 				}
 			}
 			
