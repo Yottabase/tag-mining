@@ -82,7 +82,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				
 				for(String t : text.split(PUNCTUATION)){
 					t = t.trim();
-					System.out.println(t.length());
+					
 					if(t.length() < MIN_CHARS) {
 						this.skipByFewChars++;
 						continue;
