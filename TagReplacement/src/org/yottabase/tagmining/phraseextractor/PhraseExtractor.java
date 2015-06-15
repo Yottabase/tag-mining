@@ -1,10 +1,18 @@
 package org.yottabase.tagmining.phraseextractor;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -64,46 +72,14 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 			
 			for (int i = 0; i < nodes.getLength(); ++i) {
 				
-				String tagName = "", parentTagName = "";
-				
 				Node e = nodes.item(i);
 				
-				tagName = e.getParentNode().getNodeName();
-				if(Arrays.asList(SKIPPED_TAGS).contains(tagName)) {
-					this.textsSkippedByBlacklistedTags++;
-					continue;
-				}
+				if(! this.isAcceptableNode(e) ) continue;
 				
-				try{
-					parentTagName = e.getParentNode().getParentNode().getNodeName();
-					if(tagName.equals("a") && parentTagName.equals("li")) {
-						this.textsSkippedByLiATags++;
-						continue;	
-					}
-				}catch(NullPointerException e1){
-					//This exception is not relevant
-				}
+				List<Phrase> phrasesFound = this.extractPhrasesFromNode(htmlPage.getTrecID(), e);
+				this.acceptedPhrasesFound += phrasesFound.size();
 				
-				String text = e.getNodeValue();
-				
-				text = text.replaceAll(REGEX_BLANKS, " ");
-				
-				for(String t : text.split(PUNCTUATION)){
-					
-					t = t.replaceAll(REGEX_TRIM, "");
-					
-					if(t.length() < MIN_CHARS) {
-						this.phrasesSkippedByFewChars++;
-						continue;
-					}
-					
-					if(t.split("\\s").length < MIN_WORDS) {
-						this.phrasesSkippedByFewWords++;
-						continue;
-					}
-					this.acceptedPhrasesFound++;
-					phrases.add(new Phrase(htmlPage.getTrecID(), t));
-				}
+				phrases.addAll(phrasesFound);
 			}
 			
 		} catch(DOMException e){
@@ -114,6 +90,69 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 		}
 		
 		return phrases;
+	}
+	
+	public boolean isAcceptableNode(Node node){
+		String tagName = "", parentTagName = "";
+		
+		tagName = node.getParentNode().getNodeName();
+		if(Arrays.asList(SKIPPED_TAGS).contains(tagName)) {
+			this.textsSkippedByBlacklistedTags++;
+			return false;
+		}
+		
+		try{
+			parentTagName = node.getParentNode().getParentNode().getNodeName();
+			if(tagName.equals("a") && parentTagName.equals("li")) {
+				this.textsSkippedByLiATags++;
+				return false;	
+			}
+		}catch(NullPointerException e1){
+			//This exception is not relevant
+		}
+		
+		return true;
+	}
+	
+	public List<Phrase> extractPhrasesFromNode(String trecId, Node node){
+		
+		List<Phrase> phrases = new LinkedList<Phrase>();
+		
+		String text = node.getNodeValue();
+		
+		text = text.replaceAll(REGEX_BLANKS, " ");
+		
+		for(String t : text.split(PUNCTUATION)){
+			
+			t = t.replaceAll(REGEX_TRIM, "");
+			
+			if(t.length() < MIN_CHARS) {
+				this.phrasesSkippedByFewChars++;
+				continue;
+			}
+			
+			if(t.split("\\s").length < MIN_WORDS) {
+				this.phrasesSkippedByFewWords++;
+				continue;
+			}
+			
+			phrases.add(new Phrase(trecId, t));
+		}
+		
+		return phrases;
+	}
+	
+	public void printNode(Node node){
+		StringWriter writer = new StringWriter();
+		Transformer transformer;
+		try {
+			transformer = TransformerFactory.newInstance().newTransformer();
+			transformer.transform(new DOMSource(node), new StreamResult(writer));			 
+		} catch (TransformerFactoryConfigurationError | TransformerException e2) {
+			e2.printStackTrace();
+		}
+		
+		System.out.println(writer.toString());
 	}
 	
 	public String getStats(){
