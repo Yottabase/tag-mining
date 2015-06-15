@@ -39,7 +39,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	private static final String REGEX_BLANKS = "\\s+";
 	
-	private static final String REGEX_TRIM = "(\\W\\D)+$|^(\\W\\D)+";
+	private static final String REGEX_TRIM = "([^\\w]|_)+$|^([^\\w]|_)+";
 	
 	private static final String XPATH_EXTRACTOR = "//text()/..";
 	
