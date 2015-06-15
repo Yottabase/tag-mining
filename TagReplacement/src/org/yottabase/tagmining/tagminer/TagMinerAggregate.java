@@ -13,8 +13,8 @@ public class TagMinerAggregate implements InterfaceTagMiner {
 		 
 		tagMiners.add( new MoneyTagMiner() );
 		tagMiners.add( new UrlTagMiner() );
-		tagMiners.add( new DomainTagMiner() );
 		tagMiners.add( new MailTagMiner() );
+		tagMiners.add( new DomainTagMiner() );
 		tagMiners.add( new IpAddressTagMiner() );
 		tagMiners.add( new MacAddressTagMiner() );
 		tagMiners.add( new PhoneTagMiner() );

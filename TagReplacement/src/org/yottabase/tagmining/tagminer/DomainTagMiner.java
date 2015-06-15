@@ -6,7 +6,7 @@ public class DomainTagMiner extends RegexTagMiner{
 
 	private static final String TAG_NAME = "DOMAIN";
 	
-	private static final String REGEX_TEMPLATE = "((([a-z]?[0-9])|([a-z][0-9]?))+\\.(%s))";
+	private static final String REGEX_TEMPLATE = "(\\w+\\.)+(%s)\\b";
 	
 	
 	public DomainTagMiner(){
