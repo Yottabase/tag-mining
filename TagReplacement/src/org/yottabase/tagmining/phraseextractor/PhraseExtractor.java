@@ -44,6 +44,8 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	private static final String XPATH_EXTRACTOR = "//text()/..";
 	
 	private static final String[] SKIPPED_TAGS = {"head", "meta", "figure", "img", "script", "style", "option" };
+	
+	private static final String[] INLINE_TAGS = {"span", "a", "em", "strong", "small", "abbr", "data", "time", "sub", "sup", "i", "b", "u", "mark"};
 
 	private static final int MIN_WORDS = 3;
 	private static final int MIN_CHARS = 5;
@@ -134,16 +136,35 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 		
 		NodeList children = node.getChildNodes();
 		
+		boolean concatenable = false;
+		
 		for (int i = 0; i < children.getLength(); ++i) {
 			Node child = children.item(i);
 			
 			String text = child.getNodeValue();
 			
-			if(text != null){
+			if ( concatenable && 
+					( Arrays.asList(INLINE_TAGS).contains(child.getNodeName() ) || text != null)){
 				
-				text = text.replaceAll(REGEX_BLANKS, " ");
+				Phrase precPhrase = phrases.get(phrases.size() - 1);
 				
-				phrases.add(new Phrase(trecId, text));	
+				String trimmedTextContent = this.customTrim(child.getTextContent());
+				
+				precPhrase.setPhrase(precPhrase.getPhrase() + " " + trimmedTextContent);
+				precPhrase.setTaggedPhrase(precPhrase.getTaggedPhrase() + " " + trimmedTextContent);
+				
+				concatenable = true;
+				
+			}else if (text != null){
+				
+				phrases.add(new Phrase(trecId, this.customTrim(text)));
+				concatenable = true;
+				
+			}else{
+				
+				// it is a tag like <br /> or <img /> 
+				concatenable = false;
+				
 			}
 			
 		}
@@ -160,9 +181,10 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 		
 		List<Phrase> phrases = new LinkedList<Phrase>();
 		
+		phrase.setPhrase(phrase.getPhrase().replaceAll(REGEX_BLANKS, " "));
+		
+		
 		for(String t : phrase.getPhrase().split(PUNCTUATION)){
-			
-			t = t.replaceAll(REGEX_TRIM, "");
 			
 			if(t.length() < MIN_CHARS) {
 				this.phrasesSkippedByFewChars++;
@@ -213,5 +235,9 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 			this.phrasesSkippedByFewChars, this.phrasesSkippedByFewWords,  this.acceptedPhrasesFound
 		);
 				
+	}
+	
+	public String customTrim(String text){
+		return text.replaceAll(REGEX_TRIM, "");
 	}
 }
