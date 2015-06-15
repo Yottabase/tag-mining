@@ -4,7 +4,7 @@ public class UrlTagMiner extends RegexTagMiner{
 	
 	private static final String TAG_NAME = "URL";
 	
-	private static final String REGEX_TEMPLATE = "(((http)s?(://))|(www\\.)|(ftp://))(([a-z])*([A-Z])*(\\d)*)*((\\.)([a-z]{1,3})){1,2}(/)?";
+	private static final String REGEX_TEMPLATE = "(((http(s)?|ftp)://(www\\.)?)|(((http(s)?|ftp)://)?www\\.))(([a-z])*(\\d)*)*((\\.)([a-z]{1,3})){1,2}(/)?";
 	
 	
 	public UrlTagMiner(){

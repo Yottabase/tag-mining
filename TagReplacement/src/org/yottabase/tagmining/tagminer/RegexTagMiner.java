@@ -48,7 +48,7 @@ public class RegexTagMiner implements InterfaceTagMiner {
 		String taggedPhrase = phrase.getTaggedPhrase();
 		
 		// Create a Pattern object
-		Pattern r = Pattern.compile(this.regex);
+		Pattern r = Pattern.compile(this.regex, Pattern.CASE_INSENSITIVE);
 
 		// Now create matcher object.
 		Matcher m = r.matcher(taggedPhrase);
