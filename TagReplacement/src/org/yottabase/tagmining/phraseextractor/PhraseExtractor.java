@@ -52,9 +52,9 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	private int textsSkippedByLiATags = 0;
 	private int textsSkippedByBlacklistedTags = 0;
+	private int textsFound = 0;
 	private int phrasesSkippedByFewChars = 0;
 	private int phrasesSkippedByFewWords = 0;
-	private int textsFound = 0;
 	private int acceptedPhrasesFound = 0;
 	
 	@Override
@@ -81,6 +81,8 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				for(Phrase phraseFound : this.extractPhrasesFromNode(htmlPage.getTrecID(), e)){
 					
 					List<Phrase> normalizedPhrases = this.normalizePhrase(phraseFound);
+					
+					this.acceptedPhrasesFound += normalizedPhrases.size();
 					
 					phrases.addAll(normalizedPhrases);
 				}
