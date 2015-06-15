@@ -41,7 +41,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	private static final String REGEX_TRIM = "(\\W\\D)+$|^(\\W\\D)+";
 	
-	private static final String XPATH_EXTRACTOR = "//body//text()";
+	private static final String XPATH_EXTRACTOR = "//text()/..";
 	
 	private static final String[] SKIPPED_TAGS = {"head", "meta", "figure", "img", "script", "style", "option" };
 
@@ -76,10 +76,13 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				
 				if(! this.isAcceptableNode(e) ) continue;
 				
-				List<Phrase> phrasesFound = this.extractPhrasesFromNode(htmlPage.getTrecID(), e);
-				this.acceptedPhrasesFound += phrasesFound.size();
+				for(Phrase phraseFound : this.extractPhrasesFromNode(htmlPage.getTrecID(), e)){
+					
+					List<Phrase> normalizedPhrases = this.normalizePhrase(phraseFound);
+					
+					phrases.addAll(normalizedPhrases);
+				}
 				
-				phrases.addAll(phrasesFound);
 			}
 			
 		} catch(DOMException e){
@@ -92,17 +95,22 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 		return phrases;
 	}
 	
+	/**
+	 * Dato un node verifica se questo può essere utilizzato per il calcolo delle frasi
+	 * @param node
+	 * @return true se accettato, false altrimenti
+	 */
 	public boolean isAcceptableNode(Node node){
 		String tagName = "", parentTagName = "";
 		
-		tagName = node.getParentNode().getNodeName();
+		tagName = node.getNodeName();
 		if(Arrays.asList(SKIPPED_TAGS).contains(tagName)) {
 			this.textsSkippedByBlacklistedTags++;
 			return false;
 		}
 		
 		try{
-			parentTagName = node.getParentNode().getParentNode().getNodeName();
+			parentTagName = node.getParentNode().getNodeName();
 			if(tagName.equals("a") && parentTagName.equals("li")) {
 				this.textsSkippedByLiATags++;
 				return false;	
@@ -114,15 +122,45 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 		return true;
 	}
 	
+	/**
+	 * Dato un node estra le frasi dai propri figli
+	 * @param trecId
+	 * @param node
+	 * @return lista di frasi
+	 */
 	public List<Phrase> extractPhrasesFromNode(String trecId, Node node){
 		
 		List<Phrase> phrases = new LinkedList<Phrase>();
 		
-		String text = node.getNodeValue();
+		NodeList children = node.getChildNodes();
 		
-		text = text.replaceAll(REGEX_BLANKS, " ");
+		for (int i = 0; i < children.getLength(); ++i) {
+			Node child = children.item(i);
+			
+			String text = child.getNodeValue();
+			
+			if(text != null){
+				
+				text = text.replaceAll(REGEX_BLANKS, " ");
+				
+				phrases.add(new Phrase(trecId, text));	
+			}
+			
+		}
 		
-		for(String t : text.split(PUNCTUATION)){
+		return phrases;
+	}
+	
+	/**
+	 * Data una singola frase restituisce un elenco di frasi ottenute eseguendo lo split
+	 * @param phrase
+	 * @return elenco di frasi
+	 */
+	public List<Phrase> normalizePhrase(Phrase phrase){
+		
+		List<Phrase> phrases = new LinkedList<Phrase>();
+		
+		for(String t : phrase.getPhrase().split(PUNCTUATION)){
 			
 			t = t.replaceAll(REGEX_TRIM, "");
 			
@@ -136,12 +174,17 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				continue;
 			}
 			
-			phrases.add(new Phrase(trecId, t));
+			phrases.add(new Phrase(phrase.getTrecID(), t));
 		}
 		
 		return phrases;
+		
 	}
 	
+	/**
+	 * Stampa in console il nodo passato
+	 * @param node
+	 */
 	public void printNode(Node node){
 		StringWriter writer = new StringWriter();
 		Transformer transformer;
@@ -152,9 +195,12 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 			e2.printStackTrace();
 		}
 		
-		System.out.println(writer.toString());
+		System.out.println(node.getNodeName() + "|" + writer.toString());
 	}
 	
+	/**
+	 * Restituisce stringa contenente le statistiche dell'oggetto
+	 */
 	public String getStats(){
 		return String.format(
 				  "textsSkippedByLiATags:\t\t%s\n"
