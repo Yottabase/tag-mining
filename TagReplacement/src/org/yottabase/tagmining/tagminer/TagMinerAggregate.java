@@ -23,8 +23,6 @@ public class TagMinerAggregate implements InterfaceTagMiner {
 			new Timer(),
 	};
 	public TagMinerAggregate() {
-//		tagMiners.add( new SimpleDateTagMiner() );
-
 		tagMiners.add( new MoneyTagMiner() );
 		tagMiners.add( new UrlTagMiner() );
 		tagMiners.add( new DomainTagMiner() );
@@ -32,7 +30,8 @@ public class TagMinerAggregate implements InterfaceTagMiner {
 		tagMiners.add( new IpAddressTagMiner() );
 		tagMiners.add( new MacAddressTagMiner() );
 		tagMiners.add( new PhoneTagMiner() );
-		tagMiners.add( new DateTagMiner() );
+		tagMiners.add( new SimpleDateTagMiner() );
+//		tagMiners.add( new DateTagMiner() );
 		tagMiners.add( new TimeTagMiner() );
 		tagMiners.add( new UnitTagMiner() );
 		

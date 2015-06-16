@@ -10,8 +10,7 @@ public class MoneyTagMiner extends RegexTagMiner {
 	
 	private final String SYMBS = "money.symbs";
 	
-//	private final String regexTemplate = "(%s)s?\\s?\\d+((\\.|,)\\d+)?|\\d+((\\.|,)\\d+)?\\s?(%s)s?";
-	private final String regexTemplate = "(%s)s?\\s?\\d+((\\.|,)\\d+)?";
+	private final String regexTemplate = "(%s)s?\\s?\\d+((\\.|,)\\d+)?|\\d+((\\.|,)\\d+)?\\s?(%s)s?";
 	
 	public MoneyTagMiner() {
 		super();
