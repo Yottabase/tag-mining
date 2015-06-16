@@ -157,30 +157,34 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 		
 		for (int i = 0; i < children.getLength(); ++i) {
 			Node child = children.item(i);
+			String trimmedText;
 			
-			String text = child.getNodeValue();
+			boolean isTextBlock = Arrays.asList(INLINE_TAGS).contains(child.getNodeName() ) || child.getNodeName().equals("#text");
 			
-			if ( concatenable && 
-					( Arrays.asList(INLINE_TAGS).contains(child.getNodeName() ) || text != null)){
+			if( isTextBlock ){
+				
+				trimmedText = this.customTrim(child.getTextContent());
+				
+				if(trimmedText.length() == 0) continue; //skip empty block like <span></span>
+				
+			}else{
+				// it is a tag like <br /> or <img /> or div
+				//avoid a recursive text search on this kind of block
+				concatenable = false;
+				continue; 
+			}
+			 
+			if ( concatenable ){
 				
 				Phrase precPhrase = phrases.get(phrases.size() - 1);
 				
-				String trimmedTextContent = this.customTrim(child.getTextContent());
-				
-				precPhrase.setPhrase(precPhrase.getPhrase() + " " + trimmedTextContent);
-				precPhrase.setTaggedPhrase(precPhrase.getTaggedPhrase() + " " + trimmedTextContent);
-				
-				concatenable = true;
-				
-			}else if (text != null){
-				
-				phrases.add(new Phrase(trecId, this.customTrim(text)));
-				concatenable = true;
+				precPhrase.setPhrase(precPhrase.getPhrase() + " " + trimmedText);
+				precPhrase.setTaggedPhrase(precPhrase.getTaggedPhrase() + " " + trimmedText);
 				
 			}else{
 				
-				// it is a tag like <br /> or <img /> 
-				concatenable = false;
+				phrases.add(new Phrase(trecId, trimmedText ));
+				concatenable = true;
 				
 			}
 			
