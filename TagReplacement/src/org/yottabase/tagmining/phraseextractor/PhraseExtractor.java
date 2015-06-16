@@ -47,6 +47,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	private static final String[] INLINE_TAGS = {"span", "a", "em", "strong", "small", "abbr", "data", "time", "sub", "sup", "i", "b", "u", "mark"};
 
+	private static final int MAX_WORDS = 40;
 	private static final int MIN_WORDS = 3;
 	private static final int MIN_CHARS = 5;
 	
@@ -55,6 +56,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	private int textsFound = 0;
 	private int phrasesSkippedByFewChars = 0;
 	private int phrasesSkippedByFewWords = 0;
+	private int phrasesSkippedByManyWords = 0;
 	private int acceptedPhrasesFound = 0;
 	
 	HtmlCleaner htmlCleaner;
@@ -212,8 +214,15 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				continue;
 			}
 			
-			if(t.split("\\s").length < MIN_WORDS) {
+			int wordsCount = t.split("\\s").length;
+			
+			if(wordsCount < MIN_WORDS) {
 				this.phrasesSkippedByFewWords++;
+				continue;
+			}
+			
+			if(wordsCount > MAX_WORDS) {
+				this.phrasesSkippedByManyWords++;
 				continue;
 			}
 			
@@ -250,10 +259,12 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				+ "textsSkippedByBlacklistedTags:\t%s\n"
 				+ "textsFound:\t\t\t%s\n"
 				+ "phrasesSkippedByFewChars:\t%s\n"
-				+ "phrasesSkippedByFewWords:\t%s\n" 
+				+ "phrasesSkippedByFewWords:\t%s\n"
+				+ "phrasesSkippedByManyWords:\t%s\n"
 				+ "acceptedPhrasesFound:\t\t%s\n", 
 			this.textsSkippedByLiATags, this.textsSkippedByBlacklistedTags, this.textsFound, 
-			this.phrasesSkippedByFewChars, this.phrasesSkippedByFewWords,  this.acceptedPhrasesFound
+			this.phrasesSkippedByFewChars, this.phrasesSkippedByFewWords,  this.phrasesSkippedByManyWords, 
+			this.acceptedPhrasesFound
 		);
 				
 	}
