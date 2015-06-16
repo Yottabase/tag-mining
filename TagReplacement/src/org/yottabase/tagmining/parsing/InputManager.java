@@ -1,5 +1,6 @@
 package org.yottabase.tagmining.parsing;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -7,14 +8,18 @@ import org.jwat.warc.WarcRecord;
 import org.yottabase.tagmining.core.WebPage;
 
 public class InputManager implements InterfaceInputManager {
+	
+	private String inputFileName;
 
 	private InterfaceParser parser;
 
 	private InterfaceValidator validator;
 
-	public InputManager(String inputFilePath) {
+	public InputManager(String inputFilePath) {	
 		this.validator = new WarcRecordValidator();
 		this.parser = new WarcParser(inputFilePath);
+		this.inputFileName = inputFilePath.substring(
+				inputFilePath.lastIndexOf(File.separator) + 1);
 	}
 
 	/**
@@ -63,13 +68,20 @@ public class InputManager implements InterfaceInputManager {
 	 * @return
 	 */
 	private WebPage warcRecordToWebPage(WarcRecord record) {
-		WebPage webPage = null;
-
-		String trecID = (record.getHeader("WARC-TREC-ID").value.split("-"))[3];
+		String recordID = "";
+		
+		if (inputFileName.contains("CC")) {
+			// common crawl
+			recordID = record.header.warcRecordIdStr;
+		} else {
+			// clue-web
+			recordID = (record.getHeader("WARC-TREC-ID").value.split("-"))[3];
+		}
+		
 		String pageHtml = streamToString(record.getPayloadContent());
-		webPage = new WebPage(trecID, pageHtml);
-
-		return webPage;
+		
+		return new WebPage(recordID, pageHtml);
+		
 	}
 
 	/**

@@ -42,7 +42,7 @@ public class Main {
 			String filePath = file.getPath();
 			String fileName = file.getName();
 			String[] fileNameSplit = fileName.split("-");
-			String fileId = (fileNameSplit.length > 1) ? fileNameSplit[3] : fileName.split("\\.")[0];
+			String fileId = (fileNameSplit.length > 1) ? "CC-"+fileNameSplit[3] : fileName.split("\\.")[0];
 			
 			processFile(filePath, outputPath, fileId);
 			
