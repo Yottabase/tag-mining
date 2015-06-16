@@ -1,13 +1,13 @@
 package org.yottabase.tagmining.tagminer;
 
-public class DateTagMiner extends RegexTagMiner implements InterfaceTagMiner {
+public class SimpleDateTagMiner extends RegexTagMiner implements InterfaceTagMiner {
 
 	private static final String TAG_NAME = "DATE";
 	
 	private final String MONTHS = "month";
 	
 	//#Dec 12th 2008	Jan 14, 2009	September 22, 2008
-	private String DATE1 = "((%s)\\s?(([0-2]?[1-9])|([3][0-1]))-?(th)?,?\\s(19[\\d]{2}|2[\\d]{3}),?)";
+	private String DATE1 = "((%s)\\s?(\\d*)(th)?,?-?\\s([1-2][\\d]{3}),?)";
 	
 	//#September 22-07	Sep 31-07		September 31-12 	September 07/31		September 07-31
 	private String DATE2 = "((%s)\\s?(([0-2]?[1-9]|([3][0-1]))(-|\\/)(([0][1-9])|([1][0-2]))))";
@@ -21,7 +21,7 @@ public class DateTagMiner extends RegexTagMiner implements InterfaceTagMiner {
 	//2006-06-19	2006/06/19	2006\06\19		2006.06.19		2006.1.1
 	private final String DATE5 = "(((1|2)[\\d]{3}))(-|\\.|/|\\\\)((0?[1-9]|1[1-2]))(-|\\.|/|\\\\)((3[0-1])|([0-2]?[1-9]))";	
 
-	public DateTagMiner() {
+	public SimpleDateTagMiner() {
 		super();
 		String values = (super.properties.get(MONTHS)).replaceAll(",", "|");
 		String dateRegex1 = String.format(this.DATE1, values);

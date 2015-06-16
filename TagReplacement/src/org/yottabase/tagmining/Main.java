@@ -83,5 +83,10 @@ public class Main {
 		System.out.println(phraseExtractor.getStats());
 		System.out.println("Extraction elapsed time: " + timerExtraction.getElapsedTime() + " ms");
 		System.out.println("Tagging elapsed time: " + timerTagMining.getElapsedTime() + " ms");
+		
+		for (int i = 0; i < tagMiner.timers.length; i++) {
+			
+			System.out.println(i +"\t"+ tagMiner.timers[i].getElapsedTime());
+		}
 	}
 }

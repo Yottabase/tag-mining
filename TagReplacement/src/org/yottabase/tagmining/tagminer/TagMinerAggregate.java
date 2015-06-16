@@ -4,17 +4,31 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.yottabase.tagmining.core.Phrase;
+import org.yottabase.tagmining.utils.Timer;
 
 public class TagMinerAggregate implements InterfaceTagMiner {
 
 	private List<InterfaceTagMiner> tagMiners = new LinkedList<InterfaceTagMiner>();
 	
+	public Timer [] timers = {
+			new Timer(),
+			new Timer(),
+			new Timer(),
+			new Timer(),
+			new Timer(),
+			new Timer(),
+			new Timer(),
+			new Timer(),
+			new Timer(),
+			new Timer(),
+	};
 	public TagMinerAggregate() {
-		 
+//		tagMiners.add( new SimpleDateTagMiner() );
+
 		tagMiners.add( new MoneyTagMiner() );
 		tagMiners.add( new UrlTagMiner() );
-		tagMiners.add( new MailTagMiner() );
 		tagMiners.add( new DomainTagMiner() );
+		tagMiners.add( new MailTagMiner() );
 		tagMiners.add( new IpAddressTagMiner() );
 		tagMiners.add( new MacAddressTagMiner() );
 		tagMiners.add( new PhoneTagMiner() );
@@ -28,11 +42,12 @@ public class TagMinerAggregate implements InterfaceTagMiner {
 	public Phrase tagPhrase(Phrase originalPhrase) {
 		
 		Phrase phrase = originalPhrase;
-		
-		for(InterfaceTagMiner tagMiner : tagMiners){
+		for (int i = 0; i < tagMiners.size(); i++) {
+			timers[i].startOrRestart();
 			
-			phrase = tagMiner.tagPhrase(phrase);
+			phrase = tagMiners.get(i).tagPhrase(phrase);
 			
+			timers[i].pause();
 		}
 		
 		return phrase;
