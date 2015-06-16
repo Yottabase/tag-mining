@@ -41,9 +41,9 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	private static final String REGEX_TRIM = "^([^\\w]|_)+|([^a-z0-9\\?\\.!;])+$";
 	
-	private static final String XPATH_EXTRACTOR = "//text()/..";
+	private static final String XPATH_EXTRACTOR = "//body//text()/..";
 	
-	private static final String[] SKIPPED_TAGS = {"head", "meta", "figure", "img", "script", "style", "option" };
+	private static final String[] SKIPPED_TAGS = {"head", "meta", "figure", "img", "script", "style", "option", "form" };
 	
 	private static final String[] INLINE_TAGS = {"span", "a", "em", "strong", "small", "abbr", "data", "time", "sub", "sup", "i", "b", "u", "mark"};
 
@@ -57,19 +57,34 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	private int phrasesSkippedByFewWords = 0;
 	private int acceptedPhrasesFound = 0;
 	
+	HtmlCleaner htmlCleaner;
+	
+	DomSerializer domSerializer;
+	
+	public PhraseExtractor() {
+		
+		CleanerProperties cleanerProperties = new CleanerProperties();	
+		cleanerProperties.setOmitComments(true);
+		cleanerProperties.setPruneTags(String.join(",", SKIPPED_TAGS));
+		
+		htmlCleaner = new HtmlCleaner(cleanerProperties);
+		domSerializer = new DomSerializer(cleanerProperties);
+	}
+
 	@Override
 	public List<Phrase> extractPhrases(WebPage htmlPage) {
 		
 		List<Phrase> phrases = new ArrayList<Phrase>();
 		
-		TagNode tagNode = new HtmlCleaner().clean(htmlPage.getPageHtml());
+		TagNode rootTag = htmlCleaner.clean(htmlPage.getPageHtml());
+		
 		try {
 			
-			CleanerProperties cleanerProperties = new CleanerProperties();	
-			Document doc = new DomSerializer(cleanerProperties).createDOM(tagNode);
+			Document doc = domSerializer.createDOM(rootTag);
 			
 			XPath xpath = XPathFactory.newInstance().newXPath();
 			NodeList nodes = (NodeList) xpath.evaluate(XPATH_EXTRACTOR, doc, XPathConstants.NODESET);
+			
 			this.textsFound += nodes.getLength();
 			
 			for (int i = 0; i < nodes.getLength(); ++i) {
