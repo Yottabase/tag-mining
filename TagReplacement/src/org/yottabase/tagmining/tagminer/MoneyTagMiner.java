@@ -10,7 +10,7 @@ public class MoneyTagMiner extends RegexTagMiner {
 	
 	private final String SYMBS = "money.symbs";
 	
-	private final String regexTemplate = "((%s)s?(?:(?![\\n\\r])\\s)*(\\d)+((\\.|,)(\\d)+)?)|(\\d)+((\\.|,)(\\d)+)?(?:(?![\\n\\r])\\s)(%s)s?";
+	private final String regexTemplate = "(%s)s?\\s?\\d+((\\.|,)\\d+)?|\\d+((\\.|,)\\d+)?\\s?(%s)s?";
 	
 	public MoneyTagMiner() {
 		super();
@@ -18,7 +18,7 @@ public class MoneyTagMiner extends RegexTagMiner {
 		String words = super.properties.get(WORDS);
 		String codes = super.properties.get(CODES);
 		String symbs = super.properties.get(SYMBS);
-		String values = (words + "," + codes + "," + symbs).replaceAll(",", "|");
+		String values = (symbs + "," + codes + "," + words).replaceAll(",", "|");
 		
 		super.setTag(TAG_NAME);
 		super.setRegex(String.format(this.regexTemplate, values, values));

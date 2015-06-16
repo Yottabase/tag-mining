@@ -13,7 +13,7 @@ public class RegexTagMiner implements InterfaceTagMiner {
 
 	private String regex;
 	
-	private final String VALUES_PROPERTY_FILE = "values.properties";
+	private final String VALUES_PROPERTY_FILE = "values_xs.properties";
 	
 	protected PropertyReader properties = new PropertyReader(VALUES_PROPERTY_FILE);
 

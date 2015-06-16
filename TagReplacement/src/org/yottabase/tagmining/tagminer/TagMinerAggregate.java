@@ -10,11 +10,10 @@ public class TagMinerAggregate implements InterfaceTagMiner {
 	private List<InterfaceTagMiner> tagMiners = new LinkedList<InterfaceTagMiner>();
 	
 	public TagMinerAggregate() {
-		 
 		tagMiners.add( new MoneyTagMiner() );
 		tagMiners.add( new UrlTagMiner() );
-		tagMiners.add( new MailTagMiner() );
 		tagMiners.add( new DomainTagMiner() );
+		tagMiners.add( new MailTagMiner() );
 		tagMiners.add( new IpAddressTagMiner() );
 		tagMiners.add( new MacAddressTagMiner() );
 		tagMiners.add( new PhoneTagMiner() );
@@ -29,10 +28,8 @@ public class TagMinerAggregate implements InterfaceTagMiner {
 		
 		Phrase phrase = originalPhrase;
 		
-		for(InterfaceTagMiner tagMiner : tagMiners){
-			
+		for(InterfaceTagMiner tagMiner : this.tagMiners){
 			phrase = tagMiner.tagPhrase(phrase);
-			
 		}
 		
 		return phrase;
