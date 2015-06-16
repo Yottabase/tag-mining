@@ -40,8 +40,8 @@ public class Timer {
 		return String.format("%s: %dms (%dm %ds)",
 			this.timerName,
 			this.elapsedTime,
-			this.elapsedTime/1000/60/60,
-			this.elapsedTime/1000/60
+			Math.round(this.elapsedTime/1000/60),
+			Math.round(this.elapsedTime/1000) - (Math.round(this.elapsedTime/1000/60) * 60)
 		);
 	}
 
