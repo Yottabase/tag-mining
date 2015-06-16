@@ -39,7 +39,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	private static final String REGEX_BLANKS = "\\s+";
 	
-	private static final String REGEX_TRIM = "^([^\\w]|_)+|([^a-z0-9\\?\\.!;])+$";
+	private static final String REGEX_TRIM = "^([^\\w]+)|([^a-z0-9\\?\\.!;]+)$";
 	
 	private static final String XPATH_EXTRACTOR = "//body//text()/..";
 	
@@ -255,7 +255,6 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	}
 	
 	public String customTrim(String text){
-		return text.trim();
-		//return text.replaceAll(REGEX_TRIM, "");
+		return text.replaceAll(REGEX_TRIM, "");
 	}
 }
