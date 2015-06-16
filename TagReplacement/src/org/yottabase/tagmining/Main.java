@@ -51,8 +51,8 @@ public class Main {
 	}
 	
 	public static void processFile(String inputFile, String outputFolder, String fileId) throws IOException{
-		Timer timerExtraction = new Timer();
-		Timer timerTagMining = new Timer();
+		Timer timerExtraction = new Timer("Extraction");
+		Timer timerTagMining = new Timer("Tagging");
 		
 		InterfaceInputManager inputManager = new InputManager(inputFile);
 		InterfacePhraseExtractor phraseExtractor = new PhraseExtractor();
@@ -80,8 +80,10 @@ public class Main {
 			
 		}
 		
+		outputWriter.close();
+		
 		System.out.println(phraseExtractor.getStats());
-		System.out.println("Extraction elapsed time: " + timerExtraction.getElapsedTime() + " ms");
-		System.out.println("Tagging elapsed time: " + timerTagMining.getElapsedTime() + " ms");
+		System.out.println(timerExtraction);
+		System.out.println(timerTagMining);
 	}
 }
