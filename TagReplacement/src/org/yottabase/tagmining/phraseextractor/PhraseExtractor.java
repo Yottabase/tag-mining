@@ -240,6 +240,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	}
 	
 	public String customTrim(String text){
-		return text.replaceAll(REGEX_TRIM, "");
+		return text.trim();
+		//return text.replaceAll(REGEX_TRIM, "");
 	}
 }
