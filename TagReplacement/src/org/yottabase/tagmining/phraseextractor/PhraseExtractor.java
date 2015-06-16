@@ -35,7 +35,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	 * Reference: https://html.spec.whatwg.org/multipage/semantics.html
 	 */
 	
-	private static final String PUNCTUATION = "(?<=[\\.?!;|]\\s)";
+	private static final String PUNCTUATION = "(?<=[\\.?!;\\|]\\s)";
 	
 	private static final String REGEX_BLANKS = "\\s+";
 	
