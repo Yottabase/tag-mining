@@ -41,9 +41,9 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	private static final String REGEX_TRIM = "^([^\\w]|_)+|([^a-z0-9\\?\\.!;])+$";
 	
-	private static final String XPATH_EXTRACTOR = "//text()/..";
+	private static final String XPATH_EXTRACTOR = "//body//text()/..";
 	
-	private static final String[] SKIPPED_TAGS = {"head", "meta", "figure", "img", "script", "style", "option" };
+	private static final String[] SKIPPED_TAGS = {"head", "meta", "figure", "img", "script", "style", "option", "form" };
 	
 	private static final String[] INLINE_TAGS = {"span", "a", "em", "strong", "small", "abbr", "data", "time", "sub", "sup", "i", "b", "u", "mark"};
 
