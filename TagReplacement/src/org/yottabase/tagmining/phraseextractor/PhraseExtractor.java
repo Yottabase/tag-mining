@@ -35,11 +35,11 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	 * Reference: https://html.spec.whatwg.org/multipage/semantics.html
 	 */
 	
-	private static final String PUNCTUATION = "(?<=[\\.?!;|]\\s)";
+	private static final String PUNCTUATION = "(?<=[\\.?!;\\|]\\s)";
 	
 	private static final String REGEX_BLANKS = "\\s+";
 	
-	private static final String REGEX_TRIM = "^([^\\w]|_)+|([^a-z0-9\\?\\.!;])+$";
+	private static final String REGEX_TRIM = "^([^\\w]+)|([^a-z0-9\\?\\.!;]+)$";
 	
 	private static final String XPATH_EXTRACTOR = "//body//text()/..";
 	
@@ -47,6 +47,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	private static final String[] INLINE_TAGS = {"span", "a", "em", "strong", "small", "abbr", "data", "time", "sub", "sup", "i", "b", "u", "mark"};
 
+	private static final int MAX_WORDS = 40;
 	private static final int MIN_WORDS = 3;
 	private static final int MIN_CHARS = 5;
 	
@@ -55,6 +56,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	private int textsFound = 0;
 	private int phrasesSkippedByFewChars = 0;
 	private int phrasesSkippedByFewWords = 0;
+	private int phrasesSkippedByManyWords = 0;
 	private int acceptedPhrasesFound = 0;
 	
 	HtmlCleaner htmlCleaner;
@@ -157,30 +159,34 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 		
 		for (int i = 0; i < children.getLength(); ++i) {
 			Node child = children.item(i);
+			String trimmedText;
 			
-			String text = child.getNodeValue();
+			boolean isTextBlock = Arrays.asList(INLINE_TAGS).contains(child.getNodeName() ) || child.getNodeName().equals("#text");
 			
-			if ( concatenable && 
-					( Arrays.asList(INLINE_TAGS).contains(child.getNodeName() ) || text != null)){
+			if( isTextBlock ){
+				
+				trimmedText = this.customTrim(child.getTextContent());
+				
+				if(trimmedText.length() == 0) continue; //skip empty block like <span></span>
+				
+			}else{
+				// it is a tag like <br /> or <img /> or div
+				//avoid a recursive text search on this kind of block
+				concatenable = false;
+				continue; 
+			}
+			 
+			if ( concatenable ){
 				
 				Phrase precPhrase = phrases.get(phrases.size() - 1);
 				
-				String trimmedTextContent = this.customTrim(child.getTextContent());
-				
-				precPhrase.setPhrase(precPhrase.getPhrase() + " " + trimmedTextContent);
-				precPhrase.setTaggedPhrase(precPhrase.getTaggedPhrase() + " " + trimmedTextContent);
-				
-				concatenable = true;
-				
-			}else if (text != null){
-				
-				phrases.add(new Phrase(trecId, this.customTrim(text)));
-				concatenable = true;
+				precPhrase.setPhrase(precPhrase.getPhrase() + " " + trimmedText);
+				precPhrase.setTaggedPhrase(precPhrase.getTaggedPhrase() + " " + trimmedText);
 				
 			}else{
 				
-				// it is a tag like <br /> or <img /> 
-				concatenable = false;
+				phrases.add(new Phrase(trecId, trimmedText ));
+				concatenable = true;
 				
 			}
 			
@@ -208,8 +214,15 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				continue;
 			}
 			
-			if(t.split("\\s").length < MIN_WORDS) {
+			int wordsCount = t.split("\\s").length;
+			
+			if(wordsCount < MIN_WORDS) {
 				this.phrasesSkippedByFewWords++;
+				continue;
+			}
+			
+			if(wordsCount > MAX_WORDS) {
+				this.phrasesSkippedByManyWords++;
 				continue;
 			}
 			
@@ -246,16 +259,17 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				+ "textsSkippedByBlacklistedTags:\t%s\n"
 				+ "textsFound:\t\t\t%s\n"
 				+ "phrasesSkippedByFewChars:\t%s\n"
-				+ "phrasesSkippedByFewWords:\t%s\n" 
+				+ "phrasesSkippedByFewWords:\t%s\n"
+				+ "phrasesSkippedByManyWords:\t%s\n"
 				+ "acceptedPhrasesFound:\t\t%s\n", 
 			this.textsSkippedByLiATags, this.textsSkippedByBlacklistedTags, this.textsFound, 
-			this.phrasesSkippedByFewChars, this.phrasesSkippedByFewWords,  this.acceptedPhrasesFound
+			this.phrasesSkippedByFewChars, this.phrasesSkippedByFewWords,  this.phrasesSkippedByManyWords, 
+			this.acceptedPhrasesFound
 		);
 				
 	}
 	
 	public String customTrim(String text){
-		return text.trim();
-		//return text.replaceAll(REGEX_TRIM, "");
+		return text.replaceAll(REGEX_TRIM, "");
 	}
 }
