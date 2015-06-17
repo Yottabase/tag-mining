@@ -161,7 +161,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 			Node child = children.item(i);
 			String trimmedText;
 			
-			boolean isTextBlock = Arrays.asList(INLINE_TAGS).contains(child.getNodeName() ) || child.getNodeName().equals("#text");
+			boolean isTextBlock = this.isInlineTag(child) || child.getNodeName().equals("#text");
 			
 			if( isTextBlock ){
 				
@@ -231,6 +231,15 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 		
 		return phrases;
 		
+	}
+	
+	/**
+	 * E' un nodo di tipo inline
+	 * @param node
+	 * @return
+	 */
+	public boolean isInlineTag(Node node){
+		return Arrays.asList(INLINE_TAGS).contains(node.getNodeName());
 	}
 	
 	/**
