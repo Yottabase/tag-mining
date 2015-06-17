@@ -10,6 +10,7 @@ public class MoneyTagMiner extends RegexTagMiner {
 	
 	private final String SYMBS = "money.symbs";
 	
+	//x 10	x10		x 10.1000	x 10,1000	10.1000x		10,1000 x
 	private final String regexTemplate = "(%s)s?\\s?\\d+((\\.|,)\\d+)?|\\d+((\\.|,)\\d+)?\\s?(%s)s?";
 	
 	public MoneyTagMiner() {

@@ -6,7 +6,7 @@ public class UnitTagMiner extends RegexTagMiner {
 
 	private final String UNITS = "unit";
 	
-	private final String regexTemplate = "(\\d+[\\.|,]\\d+|\\d+)(([ ]?)+%s\\b)";
+	private final String regexTemplate = "\\b(\\d+[\\.|,]\\d+|\\d+)(([ ]?)+%s\\b)";
 	
 	public UnitTagMiner() {
 		super();
