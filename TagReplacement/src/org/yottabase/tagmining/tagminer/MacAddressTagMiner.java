@@ -4,7 +4,7 @@ public class MacAddressTagMiner extends RegexTagMiner {
 	
 	private final String TAG_NAME = "MAC_ADDRESS";
 	
-	private final String regexTemplate = "(([0-9A-Fa-f]{2}[-:]){5}[0-9A-Fa-f]{2})|(([0-9A-Fa-f]{4}\\.){2}[0-9A-Fa-f]{4})";
+	private final String regexTemplate = "\\b([^\\s!,;:_]{2}(:|-)){5}[^\\s!,;:_]{2}\\b";
 	
 	public MacAddressTagMiner() {
 		super();
