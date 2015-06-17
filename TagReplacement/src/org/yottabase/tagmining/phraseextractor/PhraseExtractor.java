@@ -43,9 +43,9 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 	
 	private static final String XPATH_EXTRACTOR = "//body//text()/..";
 	
-	private static final String[] SKIPPED_TAGS = {"head", "meta", "figure", "img", "script", "style", "option", "form" };
+	private static final String[] SKIPPED_TAGS = {"head","meta","figure","script","style","option","select","form","nav","aside","header","footer"};
 	
-	private static final String[] INLINE_TAGS = {"span", "a", "em", "strong", "small", "abbr", "data", "time", "sub", "sup", "i", "b", "u", "mark"};
+	private static final String[] INLINE_TAGS = {"span","a","em","strong","small","abbr","data","time","sub","sup","i","b","u","mark"};
 
 	private static final int MAX_WORDS = 40;
 	private static final int MIN_WORDS = 3;
