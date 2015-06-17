@@ -82,6 +82,7 @@ public class Main {
 		
 		outputWriter.close();
 		
+		System.out.println(tagMiner.getStats());
 		System.out.println(phraseExtractor.getStats());
 		System.out.println(timerExtraction);
 		System.out.println(timerTagMining);
