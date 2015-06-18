@@ -106,7 +106,7 @@ public class PhraseExtractor implements InterfacePhraseExtractor {
 				
 			}
 			
-		} catch(DOMException e){
+		} catch(DOMException | NullPointerException e){
 			System.err.println("An invalid or illegal HTML character is specified.");
 			
 		} catch (ParserConfigurationException | XPathExpressionException e) {
