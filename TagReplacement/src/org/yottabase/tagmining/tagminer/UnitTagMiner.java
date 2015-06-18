@@ -6,13 +6,12 @@ public class UnitTagMiner extends RegexTagMiner {
 
 	private final String UNITS = "unit";
 	
-	private final String regexTemplate = "\\b(\\d+[\\.|,]\\d+|\\d+)(([ ]?)+%s\\b)";
+	private final String regexTemplate = "\\b(\\d+[\\.|,]\\d+|\\d+)(([ ]?)+(%s)\\b)";
 	
 	public UnitTagMiner() {
 		super();
 		
 		String values = (super.properties.get(UNITS)).replaceAll(",", "|");
-		
 		super.setTag(TAG_NAME);
 		super.setRegex(String.format(this.regexTemplate, values));
 		
